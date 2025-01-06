@@ -1,5 +1,5 @@
 import { Tooltip } from "primereact/tooltip";
-import React, { useState } from "react";
+import React from "react";
 import { v4 as uuid } from "uuid";
 
 interface MenuType {
@@ -34,9 +34,11 @@ const menus: MenuType[] = [
   },
 ];
 
-const Sidebar: React.FC = () => {
-  const [expanded, setExpanded] = useState<boolean>(true);
+interface SidebarProps {
+  expanded: boolean;
+}
 
+const Sidebar: React.FC<SidebarProps> = ({ expanded }) => {
   return (
     <aside className="lg:block hidden h-screen">
       <nav className={`flex flex-col bg-white shadow-sm border-r h-full`}>
@@ -47,20 +49,9 @@ const Sidebar: React.FC = () => {
               alt="Logo"
               className={`transition-all ${expanded ? "w-32" : "w-0"}`}
             />
-            {/* <span className={`font-bold  text-purple-800 text-xl `}>
-              Contact Book
-            </span> */}
           </a>
-          <div className="border rounded-full grow-0 cursor-pointer shrink-0">
-            <button
-              className="m-1 text-gray-40 pi pi-times"
-              onClick={() => setExpanded((expanded) => !expanded)}
-              aria-label="Toggle Sidebar"
-            />
-          </div>
         </div>
-
-        <ul className="flex-1 mt-5 px-3">
+        <ul className={`flex-1 mt-5 px-3`}>
           {menus.map((menu, index) => (
             <SidebarItem
               key={uuid()}

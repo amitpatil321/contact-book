@@ -1,13 +1,19 @@
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 
-const Header = () => {
+interface HeaderProps {
+  expanded: boolean;
+  setExpanded: (value: boolean) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ expanded, setExpanded }) => {
   return (
-    <div className="flex w-full bg-white h-16 rounded-lg p-4 items-center ">
-      <div className="p-inputgroup w-[60%]">
+    <div className="flex items-center bg-white p-4 rounded-lg w-full h-16">
+      <div className="w-[60%] p-inputgroup">
         <Button
           icon="pi pi-bars border-transparent focus:border-transparent !outline-none focus:ring-0 "
           text
+          onClick={() => setExpanded(!expanded)}
         />
         <Button
           icon="pi pi-search border-transparent focus:border-transparent text-purple-500 bold focus:ring-0"
@@ -15,10 +21,10 @@ const Header = () => {
         />
         <InputText
           placeholder="Search contact..."
-          className="border-none border-transparent focus:border-transparent focus:ring-0 pl-0"
+          className="pl-0 border-transparent focus:border-transparent border-none focus:ring-0"
         />
       </div>
-      <div className=" w-[40%] text-right">Hello</div>
+      <div className="text-right w-[40%]">Hello</div>
     </div>
   );
 };
