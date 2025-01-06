@@ -1,0 +1,30 @@
+@layer tailwind-base, primereact, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+#root {
+  /* max-width: 1280px; */
+  margin: 0 auto;
+  /* padding: 2rem; */
+  /* text-align: center; */
+  font-family: ubuntu, "Open Sans", "Helvetica Neue";
+  --surface-ground: #fff;
+}
+
+.p-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.p-tooltip {
+  font-size: 16px !important;
+  padding: 2px !important;
+  margin: 2px !important;
+}
