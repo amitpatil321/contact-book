@@ -1,4 +1,4 @@
-import { Database } from "../types/supabase";
+import { Database } from "../types/supabase.types";
 
 type TableNames = keyof Database["public"]["Tables"];
 

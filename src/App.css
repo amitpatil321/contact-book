@@ -10,12 +10,14 @@
 }
 
 #root {
-  /* max-width: 1280px; */
   margin: 0 auto;
-  /* padding: 2rem; */
-  /* text-align: center; */
-  font-family: ubuntu, "Open Sans", "Helvetica Neue";
+  font-family: ubuntu, "Open Sans", "Helvetica Neue", sans-serif !important;
   --surface-ground: #fff;
+}
+
+.p-component,
+.pi {
+  font-family: ubuntu, "primeicons", "Open Sans", "Helvetica Neue", sans-serif !important;
 }
 
 .p-button:focus {
@@ -23,8 +25,12 @@
   box-shadow: none !important;
 }
 
-.p-tooltip {
-  font-size: 16px !important;
-  padding: 2px !important;
-  margin: 2px !important;
+.p-tooltip .p-tooltip-arrow {
+  border-top-color: var(--purple-400);
+}
+.p-tooltip .p-tooltip-text {
+  background-color: var(--purple-400);
+  padding: 0.2rem 0.5rem;
+  font-size: 12px !important;
+  box-shadow: none;
 }

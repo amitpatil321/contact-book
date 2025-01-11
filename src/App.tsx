@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
+import ListContacts from "./components/Dashboard";
 import Header from "./components/Header";
-import ListContacts from "./components/ListContacts";
 import Sidebar from "./components/Sidebar";
 
 function App() {

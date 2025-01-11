@@ -51,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ expanded }) => {
             />
           </a>
         </div>
-        <ul className={`flex-1 mt-5 px-3`}>
+        <ul className={`flex-1 px-3 mt-5`}>
           {menus.map((menu, index) => (
             <SidebarItem
               key={uuid()}
@@ -79,12 +79,6 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 }) => {
   const { icon, label } = item;
   return (
-    // <li
-    //   className={`relative flex items-center pl-4 font-medium mb-2 rounded-lg cursor-pointer w-full py-2
-    //     text-slate-400 ${
-    //       active && "bg-purple-600 text-white"
-    //     } hover:text-purple-500`}
-    // >
     <li
       className={`group relative flex items-center font-medium rounded-md cursor-pointer py-2 px-3 my-1
         text-slate-400 h-10 ${
@@ -111,7 +105,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         </div>
       )}
       {!expanded && (
-        <div className="group-hover:visible left-full z-50 absolute bg-purple-100 opacity-20 group-hover:opacity-100 ml-6 px-3 py-1 rounded-lg text-purple-500 text-sm transition-all -translate-x-3 group-hover:translate-x-0 invisible">
+        <div className="group-hover:visible group-hover:ml-5 left-full z-50 absolute bg-purple-500 px-3 py-1 rounded-lg text-sm text-white transition-all -translate-x-3 group-hover:translate-x-0 invisible">
           {label}
         </div>
       )}

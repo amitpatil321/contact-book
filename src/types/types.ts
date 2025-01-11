@@ -9,6 +9,7 @@
 //   profile_pic: string | null;
 // }
 
-import { Database } from "../types/supabase"; // Adjust the path to your generated types file
+import { Database } from "../types/supabase.types"; // Adjust the path to your generated types file
 
 export type Contact = Database["public"]["Tables"]["contacts"]["Row"];
+export type Meta = Database["public"]["Tables"]["meta"]["Row"];

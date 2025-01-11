@@ -2,7 +2,12 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        ubuntu: ["ubuntu"],
+        // Add more custom font families as needed
+      },
+    },
   },
   plugins: [],
 };
