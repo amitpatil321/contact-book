@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 
+import { AppContext } from "../context/AppContext";
+import { AppContextType } from "../types/types";
+import AddContact from "./AddContact";
 import ContactDetails from "./ContactDetails";
 import ListContacts from "./ListContacts";
 
 const Dashboard: React.FC = () => {
+  const { showAddContact } = useContext(AppContext) as AppContextType;
   return (
     <div className="mt-3 rounded-lg w-full h-full">
       <div className="flex gap-4 w-full">
@@ -11,7 +15,7 @@ const Dashboard: React.FC = () => {
           <ListContacts />
         </div>
         <div className="md:block hidden bg-white p-4 rounded-lg w-[50%] h-[calc(100vh-110px)]">
-          <ContactDetails />
+          {showAddContact ? <AddContact /> : <ContactDetails />}
         </div>
       </div>
     </div>

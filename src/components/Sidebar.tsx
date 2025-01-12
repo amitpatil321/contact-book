@@ -1,6 +1,8 @@
 import { Tooltip } from "primereact/tooltip";
-import React from "react";
+import React, { useContext } from "react";
 import { v4 as uuid } from "uuid";
+import { AppContext } from "../context/AppContext";
+import { AppContextType } from "../types/types";
 
 interface MenuType {
   icon: string;
@@ -34,11 +36,8 @@ const menus: MenuType[] = [
   },
 ];
 
-interface SidebarProps {
-  expanded: boolean;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ expanded }) => {
+const Sidebar: React.FC = () => {
+  const { expanded } = useContext(AppContext) as AppContextType;
   return (
     <aside className="lg:block hidden h-screen">
       <nav className={`flex flex-col bg-white shadow-sm border-r h-full`}>

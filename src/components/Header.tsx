@@ -1,12 +1,14 @@
-import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { AppContextType } from "../types/types";
 
-interface HeaderProps {
-  expanded: boolean;
-  setExpanded: (value: boolean) => void;
-}
+const Header: React.FC = () => {
+  const { expanded, setExpanded, setShowAddContact } = useContext(
+    AppContext
+  ) as AppContextType;
 
-const Header: React.FC<HeaderProps> = ({ expanded, setExpanded }) => {
   return (
     <div className="flex items-center bg-white p-4 rounded-lg w-full h-16">
       <div className="w-[60%] p-inputgroup">
@@ -24,7 +26,17 @@ const Header: React.FC<HeaderProps> = ({ expanded, setExpanded }) => {
           className="pl-0 border-transparent focus:border-transparent border-none focus:ring-0"
         />
       </div>
-      <div className="text-right w-[40%]">Hello</div>
+      <div className="text-right w-[40%]">
+        <Button
+          icon="pi pi-plus"
+          label="Add Contact"
+          aria-label="Add contact"
+          severity="help"
+          size="small"
+          text
+          onClick={() => setShowAddContact(true)}
+        />
+      </div>
     </div>
   );
 };
