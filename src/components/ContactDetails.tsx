@@ -1,59 +1,43 @@
 import { motion } from "framer-motion";
 import { Messages } from "primereact/messages";
 import { Skeleton } from "primereact/skeleton";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { v4 as uuid } from "uuid";
 
 import { Avatar } from "primereact/avatar";
 import { Button } from "primereact/button";
 import { TabPanel, TabView } from "primereact/tabview";
-import { TABLES } from "../constants/constants";
-import supabase from "../constants/supabase";
+import useFetchContactMeta from "../api/useFetchContactMeta";
 import useStore from "../store/store";
 import { Contact, Meta } from "../types/types";
 import Loading from "./Loading";
+import NoContactSelected from "./NoContactSelected";
 
-const ContactDetails: React.FC = () => {
-  const [meta, setMeta] = useState<Meta[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+const ContactDetails = () => {
+  const { selected: contact } = useStore();
   const msgs = useRef<Messages | null>(null);
 
-  const { selected: contact } = useStore();
-  const { first_name, last_name, profile_pic, email, mobile } = contact || {};
+  const {
+    data: meta = [],
+    error,
+    isLoading: loading,
+  } = useFetchContactMeta(contact?.id);
+
+  if (!contact) return <NoContactSelected />;
+
+  const { first_name, last_name, profile_pic, email, mobile } = contact;
   const { work_company, work_designation } = meta[0] || {};
 
-  useEffect(() => {
-    if (error && msgs.current) {
-      msgs.current.clear();
-      msgs.current.show({
-        sticky: true,
-        severity: "error",
-        summary: "Error",
-        detail: error,
-        closable: false,
-      });
-    }
-  }, [error]);
-
-  useEffect(() => {
-    const fetchUserMeta = async () => {
-      if (!contact?.id) return;
-
-      setLoading(true);
-      const { data, error } = await supabase
-        .from(TABLES.meta)
-        .select("*")
-        .eq("user_id", contact.id);
-
-      if (error) {
-        setError("Error fetching user details");
-      } else setMeta(data as Meta[]);
-      setLoading(false);
-    };
-
-    fetchUserMeta();
-  }, [contact]);
+  if (error && msgs.current) {
+    msgs.current.clear();
+    msgs.current.show({
+      sticky: true,
+      severity: "error",
+      summary: "Error",
+      detail: error.message,
+      closable: false,
+    });
+  }
 
   return contact ? (
     <motion.div
@@ -124,16 +108,7 @@ const ContactDetails: React.FC = () => {
       )}
     </motion.div>
   ) : (
-    <div className="flex flex-col justify-center items-center gap-5 h-full">
-      <img
-        src="/contact-book-icon.png"
-        alt="no contact selected"
-        className="h-40"
-      />
-      <h2 className="font-semibold text-gray-400 text-xl">
-        No contact selected
-      </h2>
-    </div>
+    <NoContactSelected />
   );
 };
 

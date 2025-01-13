@@ -1,22 +1,16 @@
-import { useEffect, useRef, useState } from "react";
-
 import { motion } from "motion/react";
 import { Avatar } from "primereact/avatar";
 import { Messages } from "primereact/messages";
-
 import { Tooltip } from "primereact/tooltip";
-import { TABLES } from "../constants/constants";
-import supabase from "../constants/supabase";
+import { useEffect, useRef } from "react";
+
+import useFetchContacts from "../api/useFetchContacts";
 import useStore from "../store/store";
-import { Contact } from "../types/types";
 import Loading from "./Loading";
 
 const Contacts = () => {
-  const [contacts, setContacts] = useState<Contact[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: contacts, error, isLoading: loading } = useFetchContacts();
   const msgs = useRef<Messages | null>(null);
-
   const { setSelectedContact } = useStore();
 
   useEffect(() => {
@@ -26,27 +20,11 @@ const Contacts = () => {
         sticky: true,
         severity: "error",
         summary: "Error",
-        detail: error,
+        detail: error?.message,
         closable: false,
       });
     }
   }, [error]);
-
-  useEffect(() => {
-    const fetchContacts = async () => {
-      const { data, error } = await supabase
-        .from(TABLES.contacts)
-        .select("*")
-        .order("first_name");
-
-      if (error) {
-        setError("Error fetching contacts");
-      } else setContacts(data as Contact[]);
-      setLoading(false);
-    };
-
-    fetchContacts();
-  }, []);
 
   return (
     <>
