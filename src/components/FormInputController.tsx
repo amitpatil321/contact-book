@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
 import {
@@ -8,6 +7,7 @@ import {
   Path,
   UseFormRegister,
 } from "react-hook-form";
+import { MotionError } from "../helpers/utils";
 
 interface FormInputControllerProps<T extends FieldValues> {
   name: Path<T>;
@@ -33,7 +33,9 @@ const FormInputController = <T extends FieldValues>({
           {name === "birthdate" ? (
             <>
               <Calendar
-                {...register(name)}
+                {...register(name, {
+                  validate: () => !errors[name] || undefined, // Skip validation if no Zod schema
+                })}
                 {...field}
                 maxDate={new Date()}
                 placeholder={placeholder}
@@ -43,51 +45,35 @@ const FormInputController = <T extends FieldValues>({
                 panelStyle={{ width: "300px" }}
                 aria-invalid={!!errors[name]?.message}
               />
-              <MotionError
-                message={(errors[name]?.message as string) || ""}
-                showError={!!errors[name]?.message}
-              />
+              {errors[name]?.message && (
+                <MotionError
+                  message={(errors[name]?.message as string) || ""}
+                  showError={!!errors[name]?.message}
+                />
+              )}
             </>
           ) : (
             <>
               <InputText
-                {...register(name)}
+                {...register(name, {
+                  validate: () => !errors[name] || undefined, // Skip validation if no Zod schema
+                })}
                 {...field}
                 placeholder={placeholder}
                 className={`p-2 ${className}`}
                 aria-invalid={!!errors[name]?.message}
               />
-              <MotionError
-                message={(errors[name]?.message as string) || ""}
-                showError={!!errors[name]?.message}
-              />
+              {errors[name]?.message && (
+                <MotionError
+                  message={(errors[name]?.message as string) || ""}
+                  showError={!!errors[name]?.message}
+                />
+              )}
             </>
           )}
         </>
       )}
     />
-  );
-};
-
-interface MotionErrorProps {
-  message?: string;
-  showError: boolean;
-}
-
-const MotionError: React.FC<MotionErrorProps> = ({ message, showError }) => {
-  return (
-    <motion.div
-      initial={{ height: 0, opacity: 0 }}
-      animate={
-        showError ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }
-      }
-      transition={{ duration: 0.1 }}
-      style={{ overflow: "hidden" }}
-    >
-      {message && (
-        <small className="p-error text-red-500 text-sm">{message}</small>
-      )}
-    </motion.div>
   );
 };
 

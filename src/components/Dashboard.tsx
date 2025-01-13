@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { AppContext } from "../context/AppContext";
 import { AppContextType } from "../types/types";
-import AddContact from "./AddContact";
+import AddContact from "./AddContact/AddContact";
 import ContactDetails from "./ContactDetails";
 import ListContacts from "./ListContacts";
 
