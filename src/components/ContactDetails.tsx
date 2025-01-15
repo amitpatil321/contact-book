@@ -10,13 +10,12 @@ import { TabPanel, TabView } from "primereact/tabview";
 import useFetchContactMeta from "../api/useFetchContactMeta";
 import useStore from "../store/store";
 import { Contact, Meta } from "../types/types";
-import Loading from "./Loading";
 import Empty from "./NoContactSelected";
 
 const ContactDetails = () => {
   const { selected: contact } = useStore();
   const msgs = useRef<Messages | null>(null);
-  const contactId = contact?.id ? Number(contact.id) : undefined;
+  const contactId = contact?.id ? contact.id : undefined;
 
   const {
     data: meta = [],
@@ -42,7 +41,7 @@ const ContactDetails = () => {
 
   return (
     <motion.div
-      className="flex flex-col gap-8"
+      className="flex flex-col"
       key={contact.id}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -71,9 +70,9 @@ const ContactDetails = () => {
             </h3>
             {loading ? (
               <div className="flex flex-row pt-2">
-                <Skeleton width="3rem" height="0.7rem" />
+                <Skeleton width="5rem" height="0.7rem" />
                 &nbsp;
-                <Skeleton width="3rem" height="0.7rem" />
+                <Skeleton width="7rem" height="0.7rem" />
               </div>
             ) : (
               (work_company || work_designation) && (
@@ -103,7 +102,20 @@ const ContactDetails = () => {
         </div>
       </div>
       {loading ? (
-        <Loading size="medium" />
+        <>
+          <div className="flex gap-6 mt-11 pb-2">
+            <Skeleton width="8rem" height="2rem"></Skeleton>
+            <Skeleton width="8rem" height="2rem"></Skeleton>
+            <Skeleton width="8rem" height="2rem"></Skeleton>
+          </div>
+          <hr />
+          <div className="flex flex-col pt-2">
+            <Skeleton width="8rem" height="0.6rem" className="mb-2"></Skeleton>
+            <Skeleton width="5rem" height="0.6rem" className="mb-2"></Skeleton>
+            <Skeleton width="7rem" height="0.6rem" className="mb-2"></Skeleton>
+            <Skeleton width="5rem" height="0.6rem" className="mb-2"></Skeleton>
+          </div>
+        </>
       ) : (
         <MetaInfo meta={meta} msgs={msgs} />
       )}
@@ -234,7 +246,7 @@ const MetaInfo: React.FC<{
   ].some((field) => field != null);
 
   return (
-    <>
+    <div className="mt-10">
       <Messages ref={msgs} />
       {hasAnyField ? (
         <TabView>
@@ -324,6 +336,6 @@ const MetaInfo: React.FC<{
           ) : null}
         </TabView>
       ) : null}
-    </>
+    </div>
   );
 };

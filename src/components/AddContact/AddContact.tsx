@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "primereact/button";
 import { Inplace, InplaceContent, InplaceDisplay } from "primereact/inplace";
 import { TabPanel, TabView } from "primereact/tabview";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { v4 as uuid } from "uuid";
 import { z } from "zod";
@@ -23,12 +23,14 @@ import WorkAddress from "./WorkAddress";
 type FormDataType = z.infer<typeof formSchema>;
 
 const AddContact: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
   const { setShowAddContact } = useContext(AppContext) as AppContextType;
   const { setSelectedContact } = useStore();
 
   const { showToast } = useToast();
   const { mutate } = useSaveContact();
+
   const methods = useForm<FormDataType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,6 +40,7 @@ const AddContact: React.FC = () => {
   const { handleSubmit, reset } = methods;
 
   const submitForm = (formData: FormDataType) => {
+    setLoading(true);
     const profilePicValue =
       formData.profile_pic instanceof File ? null : formData.profile_pic;
 
@@ -49,15 +52,18 @@ const AddContact: React.FC = () => {
         new Date().toISOString().slice(0, 19).replace("T", " ") + "+00",
     };
     mutate(contactForm, {
-      onSuccess: (contact) => {
-        console.log(contact);
+      onSuccess: (response) => {
+        setLoading(false);
         queryClient.invalidateQueries({ queryKey: ["fetchContacts"] });
         showToast("success", "Success", "Contact saved successfully!");
         reset();
-        setSelectedContact(contact[0]);
+        setSelectedContact(response.contacts[0]);
         setShowAddContact(false);
       },
-      onError: (error) => showToast("error", "Error", error.message),
+      onError: (error) => {
+        setLoading(false);
+        showToast("error", "Error", error.message);
+      },
     });
   };
 
@@ -98,12 +104,19 @@ const AddContact: React.FC = () => {
               outlined
               size="small"
               label="Cancel"
+              disabled={loading}
               onClick={(event) => {
                 event.preventDefault();
                 setShowAddContact(false);
               }}
             />
-            <Button size="small" type="submit" label="Submit" />
+            <Button
+              size="small"
+              type="submit"
+              label="Submit"
+              disabled={loading}
+              loading={loading}
+            />
           </div>
         </form>
       </FormProvider>

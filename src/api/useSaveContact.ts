@@ -1,23 +1,47 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { TABLES } from "../constants/constants";
 import supabase from "../constants/supabase";
-import { Contact } from "../types/types";
+import { Contact, Meta } from "../types/types";
 
-const saveContact = async (contact: Contact): Promise<Contact[]> => {
-  const { data, error } = await supabase
+const saveContact = async (contact: Contact): Promise<{ contacts: Contact[]; meta: Meta[] }> => {
+  const { id, created_at, first_name, last_name, email, mobile, profile_pic, ...rest } = contact;
+
+  const { data: basicInfo, error: contactError } = await supabase
     .from(TABLES.contacts)
-    .insert({ ...contact }).select();
+    .insert({ id, created_at, first_name, last_name, email, mobile, profile_pic })
+    .select();
 
-  if (error) {
-    throw new Error("Error saving contact information!");
+  if (contactError) {
+    throw new Error(`Error saving contact information: ${contactError.message}`);
   }
 
-  return data  as Contact[];
+  let metaData: Meta[] = [];
+
+  if (basicInfo) {
+    const { data: metaResult, error: metaError } = await supabase
+      .from(TABLES.meta)
+      .insert({ user_id: contact.id, ...rest })
+      .select();
+
+    if (metaError) {
+      throw new Error(`Error saving meta information: ${metaError.message}`);
+    }
+
+    metaData = metaResult as Meta[];
+  }
+
+  // Return both results
+  return { contacts: basicInfo as Contact[], meta: metaData };
 };
 
 
-const useSaveContact = (): UseMutationResult<Contact[], Error, Contact> => {
-  return useMutation<Contact[], Error, Contact>({
+interface SaveContactResult {
+  contacts: Contact[];
+  meta: Meta[];
+}
+
+const useSaveContact = (): UseMutationResult<SaveContactResult, Error, Contact> => {
+   return useMutation<SaveContactResult, Error, Contact>({
     mutationFn: async (contact) => await saveContact(contact),
   });
 };

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import supabase from '../constants/supabase';
 import { Meta } from "../types/types";
 
-const fetchUserMeta = async (contactId: number): Promise<Meta[]> => {
+const fetchUserMeta = async (contactId: string): Promise<Meta[]> => {
   const { data, error } = await supabase
     .from('meta')
     .select('*')
@@ -15,7 +15,7 @@ const fetchUserMeta = async (contactId: number): Promise<Meta[]> => {
   return data as Meta[];
 };
 
-const useFetchContactMeta = (contactId: number | undefined) => {
+const useFetchContactMeta = (contactId: string | undefined) => {
   return useQuery({
     queryKey: ["userMeta", contactId],
      queryFn: () => {
