@@ -16,12 +16,13 @@ import Empty from "./NoContactSelected";
 const ContactDetails = () => {
   const { selected: contact } = useStore();
   const msgs = useRef<Messages | null>(null);
+  const contactId = contact?.id ? Number(contact.id) : undefined;
 
   const {
     data: meta = [],
     error,
     isLoading: loading,
-  } = useFetchContactMeta(contact?.id);
+  } = useFetchContactMeta(contactId);
 
   if (!contact) return <Empty message="No contact selected!" />;
 

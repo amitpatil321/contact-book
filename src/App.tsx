@@ -6,6 +6,7 @@ import Sidebar from "./components/Sidebar";
 import { AppContext } from "./context/AppContext";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastProvider } from "./context/ToastContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,11 +31,13 @@ function App() {
     <div className="flex bg-gray-100 border h-screen overflow-hidden">
       <QueryClientProvider client={queryClient}>
         <AppContext.Provider value={AppContextMemo}>
-          <Sidebar />
-          <div className="relative flex flex-col flex-1 p-4 h-full overflow-x-hidden overflow-y-auto">
-            <Header />
-            <ListContacts />
-          </div>
+          <ToastProvider>
+            <Sidebar />
+            <div className="relative flex flex-col flex-1 p-4 h-full overflow-x-hidden overflow-y-auto">
+              <Header />
+              <ListContacts />
+            </div>
+          </ToastProvider>
         </AppContext.Provider>
       </QueryClientProvider>
     </div>

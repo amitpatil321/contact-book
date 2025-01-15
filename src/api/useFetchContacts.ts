@@ -18,7 +18,7 @@ const fetchContacts = async (): Promise<Contact[]> => {
 
 const useFetchContacts = () => {
   return useQuery<Contact[]>({
-    queryKey: ["contacts"],
+    queryKey: ["fetchContacts"],
     queryFn: fetchContacts
   });
 };
