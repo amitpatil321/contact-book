@@ -1,4 +1,4 @@
-import { Database } from "../types/supabase.types"; // Adjust the path to your generated types file
+import { Database } from "../types/supabase.types";
 
 export type Contact = Database["public"]["Tables"]["contacts"]["Row"];
 export type Meta = Database["public"]["Tables"]["meta"]["Row"];

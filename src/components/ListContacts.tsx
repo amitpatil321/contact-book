@@ -2,16 +2,21 @@ import { motion } from "motion/react";
 import { Avatar } from "primereact/avatar";
 import { Messages } from "primereact/messages";
 import { Tooltip } from "primereact/tooltip";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 
+import { Button } from "primereact/button";
 import useFetchContacts from "../api/useFetchContacts";
+import { AppContext } from "../context/AppContext";
 import useStore from "../store/store";
+import { AppContextType } from "../types/types";
 import Loading from "./Loading";
+import Empty from "./NoContactSelected";
 
 const Contacts = () => {
   const { data: contacts, error, isLoading: loading } = useFetchContacts();
   const msgs = useRef<Messages | null>(null);
   const { setSelectedContact } = useStore();
+  const { setShowAddContact } = useContext(AppContext) as AppContextType;
 
   useEffect(() => {
     if (error && msgs.current) {
@@ -26,6 +31,26 @@ const Contacts = () => {
     }
   }, [error]);
 
+  if (!loading && !contacts?.length)
+    return (
+      <Empty
+        message={
+          <div className="flex flex-col items-center">
+            <span>No conatcts, Lets create one</span>
+            <Button
+              icon="pi pi-plus"
+              label="Add Contact"
+              aria-label="Add contact"
+              severity="help"
+              size="small"
+              text
+              onClick={() => setShowAddContact(true)}
+            />
+          </div>
+        }
+      />
+    );
+
   return (
     <>
       <Messages ref={msgs} />
@@ -38,7 +63,7 @@ const Contacts = () => {
             return (
               <motion.li
                 key={contact.id}
-                className="align-top flex flex-row bg-white hover:bg-purple-100 mx-3 mb-2 px-3 py-3 rounded-lg transition duration-500 cursor-pointer group"
+                className="align-top flex flex-row bg-white hover:bg-purple-100 mb-2 px-3 py-3 rounded-lg transition duration-500 cursor-pointer group"
                 onClick={() => setSelectedContact(contact)}
               >
                 <div className="w-[20%] md:w-[15%] xl:w-[8%]">

@@ -7,7 +7,15 @@ import { AppContext } from "./context/AppContext";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 5 * 1000 * 60, // 5 mins
+      staleTime: 5 * 1000 * 60,
+      retry: false,
+    },
+  },
+});
 
 function App() {
   const [expanded, setExpanded] = useState<boolean>(false);

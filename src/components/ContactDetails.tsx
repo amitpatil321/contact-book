@@ -11,7 +11,7 @@ import useFetchContactMeta from "../api/useFetchContactMeta";
 import useStore from "../store/store";
 import { Contact, Meta } from "../types/types";
 import Loading from "./Loading";
-import NoContactSelected from "./NoContactSelected";
+import Empty from "./NoContactSelected";
 
 const ContactDetails = () => {
   const { selected: contact } = useStore();
@@ -23,7 +23,7 @@ const ContactDetails = () => {
     isLoading: loading,
   } = useFetchContactMeta(contact?.id);
 
-  if (!contact) return <NoContactSelected />;
+  if (!contact) return <Empty message="No contact selected!" />;
 
   const { first_name, last_name, profile_pic, email, mobile } = contact;
   const { work_company, work_designation } = meta[0] || {};
@@ -39,7 +39,7 @@ const ContactDetails = () => {
     });
   }
 
-  return contact ? (
+  return (
     <motion.div
       className="flex flex-col gap-8"
       key={contact.id}
@@ -107,8 +107,6 @@ const ContactDetails = () => {
         <MetaInfo meta={meta} msgs={msgs} />
       )}
     </motion.div>
-  ) : (
-    <NoContactSelected />
   );
 };
 

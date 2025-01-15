@@ -19,9 +19,7 @@ const fetchContacts = async (): Promise<Contact[]> => {
 const useFetchContacts = () => {
   return useQuery<Contact[]>({
     queryKey: ["contacts"],
-    queryFn: fetchContacts,
-    staleTime: 1000 * 60 * 5,
-    retry: 2,
+    queryFn: fetchContacts
   });
 };
 

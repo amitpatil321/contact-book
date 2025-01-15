@@ -1,4 +1,6 @@
-const NoContactSelected = () => {
+import { ReactNode } from "react";
+
+const Empty: React.FC<{ message: string | ReactNode }> = ({ message }) => {
   return (
     <div className="flex flex-col justify-center items-center gap-5 h-full">
       <img
@@ -6,11 +8,9 @@ const NoContactSelected = () => {
         alt="no contact selected"
         className="h-40"
       />
-      <h5 className="font-semibold text-gray-400 text-xl">
-        No contact selected
-      </h5>
+      <h5 className="font-semibold text-gray-400 text-xl">{message}</h5>
     </div>
   );
 };
 
-export default NoContactSelected;
+export default Empty;
