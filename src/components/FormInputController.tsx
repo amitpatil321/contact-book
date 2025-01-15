@@ -34,9 +34,10 @@ const FormInputController = <T extends FieldValues>({
             <>
               <Calendar
                 {...register(name, {
-                  validate: () => !errors[name] || undefined, // Skip validation if no Zod schema
+                  validate: () => !errors[name] || undefined,
                 })}
                 {...field}
+                value={field.value || null}
                 maxDate={new Date()}
                 placeholder={placeholder}
                 showIcon
@@ -59,6 +60,7 @@ const FormInputController = <T extends FieldValues>({
                   validate: () => !errors[name] || undefined, // Skip validation if no Zod schema
                 })}
                 {...field}
+                value={field.value || ""}
                 placeholder={placeholder}
                 className={`p-2 ${className}`}
                 aria-invalid={!!errors[name]?.message}

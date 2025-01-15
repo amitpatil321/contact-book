@@ -25,12 +25,19 @@ export const formSchema = z.object({
     .refine((val) => val.length === 10, {
       message: "Mobile number must be exactly 10 digits",
     }),
-  // birthdate: z.string().optional(),
   birthdate: z
     .date()
     .optional()
     .refine((date) => !date || date <= new Date(), {
       message: "Birthdate cannot be in the future.",
+    }),
+  profile_pic: z
+    .union([
+      z.instanceof(File, { message: "Profile pic is required" }),
+      z.string().optional(),
+    ])
+    .refine((value) => value instanceof File || typeof value === "string", {
+      message: "Profile pic is required",
     }),
   company: z.string().optional(),
   designation: z.string().optional(),
@@ -48,75 +55,4 @@ export const formSchema = z.object({
   work_state: z.string().optional(),
   work_country: z.string().optional(),
   work_zip: z.string().optional(),
-  //     ,
-  //   birthdate: z
-  //     .string({ required_error: "Birthdate is required" })
-  //     .nonempty("Birthdate is required")
-  //     .refine((val) => !isNaN(new Date(val).getTime()), {
-  //       message: "Invalid date format",
-  //     }),
-  //   company: z.string({
-  //     invalid_type_error,
-  //     required_error: "Company name is required",
-  //   }),
-  //   designation: z.string({
-  //     invalid_type_error,
-  //     required_error: "Designation is required",
-  //   }),
-  //   linkedin: z.string({
-  //     invalid_type_error,
-  //     required_error: "Linkedin url is required",
-  //   }),
-  //   github: z.string({
-  //     invalid_type_error,
-  //     required_error: "Github url is required",
-  //   }),
-  //   home_address1: z.string({
-  //     invalid_type_error,
-  //     required_error: "Address line 1 is required",
-  //   }),
-  //   home_address2: z.string({
-  //     invalid_type_error,
-  //     required_error: "Address line 2 is required",
-  //   }),
-  //   home_city: z.string({
-  //     invalid_type_error,
-  //     required_error: "City is required",
-  //   }),
-  //   home_state: z.string({
-  //     invalid_type_error,
-  //     required_error: "State is required",
-  //   }),
-  //   home_country: z.string({
-  //     invalid_type_error,
-  //     required_error: "Country is required",
-  //   }),
-  //   home_zip: z.string({
-  //     invalid_type_error,
-  //     required_error: "Zip is required",
-  //   }),
-  //   work_address1: z.string({
-  //     invalid_type_error,
-  //     required_error: "Address line 1 is required",
-  //   }),
-  //   work_address2: z.string({
-  //     invalid_type_error,
-  //     required_error: "Address line 2 is required",
-  //   }),
-  //   work_city: z.string({
-  //     invalid_type_error,
-  //     required_error: "City is required",
-  //   }),
-  //   work_state: z.string({
-  //     invalid_type_error,
-  //     required_error: "State is required",
-  //   }),
-  //   work_country: z.string({
-  //     invalid_type_error,
-  //     required_error: "Country is required",
-  //   }),
-  //   work_zip: z.string({
-  //     invalid_type_error,
-  //     required_error: "Zip is required",
-  //   }),
 });

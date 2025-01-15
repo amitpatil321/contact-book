@@ -85,3 +85,15 @@ h6 {
 .p-tabview-nav-link {
   padding: 0.8rem;
 }
+
+.profile-pic .p-button {
+  background: none !important;
+  border: none !important;
+  color: #8b5cf6;
+}
+
+.profile-pic .p-button:hover {
+  background: #ad8cfb !important;
+  color: #ffffff;
+  transition-duration: 0ms !important;
+}
