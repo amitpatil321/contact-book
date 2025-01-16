@@ -103,13 +103,13 @@ const ContactDetails = () => {
       </div>
       {loading ? (
         <>
-          <div className="flex gap-6 mt-11 pb-2">
+          <div className="flex gap-6 mt-11 pb-2 pl-4">
             <Skeleton width="8rem" height="2rem"></Skeleton>
             <Skeleton width="8rem" height="2rem"></Skeleton>
             <Skeleton width="8rem" height="2rem"></Skeleton>
           </div>
           <hr />
-          <div className="flex flex-col pt-2">
+          <div className="flex flex-col pt-6 pl-4">
             <Skeleton width="8rem" height="0.6rem" className="mb-2"></Skeleton>
             <Skeleton width="5rem" height="0.6rem" className="mb-2"></Skeleton>
             <Skeleton width="7rem" height="0.6rem" className="mb-2"></Skeleton>
@@ -128,6 +128,8 @@ export default ContactDetails;
 const ActionButton: React.FC<{ contact: Contact }> = ({ contact }) => {
   return (
     <div className="flex justify-start items-center gap-2 mt-auto text-gray-400 text-sm">
+      <span className="hover:text-pink-700 cursor-pointer">Favorite</span>
+      <span className="text-gray-400">|</span>
       <span className="hover:text-purple-500 cursor-pointer">Edit</span>
       <span className="text-gray-400">|</span>
       <span className="hover:text-purple-500 cursor-pointer">Archive</span>

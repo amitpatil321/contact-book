@@ -14,6 +14,20 @@ const WorkAddress = () => {
   return (
     <div className="gap-2 grid grid-cols-2 w-full sm:w-[40%] md:w-full lg:w-[80%]">
       <FormInputController
+        name="work_company"
+        control={control}
+        register={register}
+        placeholder="Company Name"
+        className={errors.work_company ? "p-invalid" : ""}
+      />
+      <FormInputController
+        name="work_designation"
+        control={control}
+        register={register}
+        placeholder="Designation"
+        className={errors.work_company ? "p-invalid" : ""}
+      />
+      <FormInputController
         name="work_address1"
         control={control}
         register={register}

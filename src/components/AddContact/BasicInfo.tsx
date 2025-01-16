@@ -92,6 +92,14 @@ const BasicForm: React.FC<BasicFormType> = ({ methods }) => {
           placeholder="Mobile"
           className={errors.mobile ? "p-invalid" : ""}
         />
+        <FormInputController
+          name="notes"
+          controlType="textarea"
+          control={control}
+          register={register}
+          placeholder="Notes"
+          className={errors.notes ? "p-invalid" : ""}
+        />
       </div>
     </div>
   );

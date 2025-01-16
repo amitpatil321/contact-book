@@ -73,7 +73,7 @@ const AddContact: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h4>Add Contact</h4>
+      <h4 className="pb-1 pl-8">Add Contact</h4>
       <hr />
       <FormProvider {...methods}>
         <form
@@ -93,7 +93,7 @@ const AddContact: React.FC = () => {
                 <TabPanel className="m-0 p-0" header="Home Address">
                   <HomeAddress />
                 </TabPanel>
-                <TabPanel className="m-0 p-0" header="Work Address">
+                <TabPanel className="m-0 p-0" header="Work Details">
                   <WorkAddress />
                 </TabPanel>
               </TabView>

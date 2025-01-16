@@ -18,22 +18,16 @@ const PersonalInfo = () => {
           name="birthdate"
           control={control}
           register={register}
+          controlType="calendar"
           placeholder="Birthdate"
           className={errors.birthdate ? "p-invalid" : ""}
         />
         <FormInputController
-          name="work_company"
+          name="website"
           control={control}
           register={register}
-          placeholder="Company Name"
-          className={errors.work_company ? "p-invalid" : ""}
-        />
-        <FormInputController
-          name="work_designation"
-          control={control}
-          register={register}
-          placeholder="Designation"
-          className={errors.work_company ? "p-invalid" : ""}
+          placeholder="Website/Blog"
+          className={errors.website ? "p-invalid" : ""}
         />
         <FormInputController
           name="linkedin"
