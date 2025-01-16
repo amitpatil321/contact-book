@@ -104,9 +104,10 @@ const ContactDetails = () => {
       {loading ? (
         <>
           <div className="flex gap-6 mt-11 pb-2 pl-4">
-            <Skeleton width="8rem" height="2rem"></Skeleton>
-            <Skeleton width="8rem" height="2rem"></Skeleton>
-            <Skeleton width="8rem" height="2rem"></Skeleton>
+            <Skeleton width="7rem" height="2rem"></Skeleton>
+            <Skeleton width="7rem" height="2rem"></Skeleton>
+            <Skeleton width="7rem" height="2rem"></Skeleton>
+            <Skeleton width="6rem" height="2rem"></Skeleton>
           </div>
           <hr />
           <div className="flex flex-col pt-6 pl-4">
@@ -227,6 +228,7 @@ const MetaInfo: React.FC<{
     work_state,
     work_country,
     work_zip,
+    notes,
   } = meta[0] || {};
 
   const hasAnyField = [
@@ -245,6 +247,7 @@ const MetaInfo: React.FC<{
     work_state,
     work_country,
     work_zip,
+    notes,
   ].some((field) => field != null);
 
   return (
@@ -336,6 +339,15 @@ const MetaInfo: React.FC<{
               </div>
             </TabPanel>
           ) : null}
+          {notes && (
+            <TabPanel header="Notes">
+              <div className="flex flex-col gap-3">
+                <div>
+                  <div>{notes}</div>
+                </div>
+              </div>
+            </TabPanel>
+          )}
         </TabView>
       ) : null}
     </div>

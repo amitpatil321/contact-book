@@ -25,6 +25,7 @@ export const formSchema = z.object({
     .refine((val) => val.length === 10, {
       message: "Mobile number must be exactly 10 digits",
     }),
+  notes: z.string().optional(),
   birthdate: z
     .date()
     .optional()
@@ -41,8 +42,18 @@ export const formSchema = z.object({
     }),
   work_company: z.string().optional(),
   work_designation: z.string().optional(),
-  linkedin: z.string().url({ message: "Please enter valid url" }).optional(),
-  github: z.string().url({ message: "Please enter valid url" }).optional(),
+  website: z
+    .string()
+    .url({ message: "Please enter valid url, starting with http/https" })
+    .optional(),
+  linkedin: z
+    .string()
+    .url({ message: "Please enter valid url, starting with http/https" })
+    .optional(),
+  github: z
+    .string()
+    .url({ message: "Please enter valid url, starting with http/https" })
+    .optional(),
   home_address1: z.string().optional(),
   home_address2: z.string().optional(),
   home_city: z.string().optional(),
