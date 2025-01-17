@@ -1,5 +1,6 @@
 export default {
   contacts: {
+    nothingSelected: "No contact selected",
     saveSuccess: "Contact saved successfully!",
     missingId: "Contact id is missing",
     errorFetching: "Error fetching contacts",

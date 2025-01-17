@@ -1,12 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
-import supabase from '../constants/supabase';
+import { useQuery } from "@tanstack/react-query";
+import { TABLES } from "../constants/constants";
+import messages from "../constants/messages";
+import supabase from "../constants/supabase";
 import { Meta } from "../types/types";
 
 const fetchUserMeta = async (contactId: string): Promise<Meta[]> => {
   const { data, error } = await supabase
-    .from('meta')
-    .select('*')
-    .eq('user_id', contactId);
+    .from(TABLES.meta)
+    .select("*")
+    .eq("user_id", contactId);
 
   if (error) throw new Error(error.message);
 
@@ -16,9 +18,9 @@ const fetchUserMeta = async (contactId: string): Promise<Meta[]> => {
 const useFetchContactMeta = (contactId: string | undefined) => {
   return useQuery({
     queryKey: ["userMeta", contactId],
-     queryFn: () => {
+    queryFn: () => {
       if (contactId === undefined) {
-        throw new Error("Contact ID is undefined");
+        throw new Error(messages.contacts.missingId);
       }
       return fetchUserMeta(contactId);
     },
@@ -26,4 +28,4 @@ const useFetchContactMeta = (contactId: string | undefined) => {
   });
 };
 
-export default useFetchContactMeta
+export default useFetchContactMeta;

@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { AppContextType } from "../types/types";
 import AddContact from "./AddContact/AddContact";
-import ContactDetails from "./ContactDetails";
+import ContactDetails from "./ContactDetails/ContactDetails";
 import ListContacts from "./ListContacts";
 
 const Dashboard: React.FC = () => {
