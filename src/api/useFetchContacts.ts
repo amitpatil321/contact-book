@@ -4,9 +4,10 @@ import supabase from "../constants/supabase";
 import { Contact } from "../types/types";
 
 const fetchContacts = async (): Promise<Contact[]> => {
-    const { data, error } = await supabase
+  const { data, error } = await supabase
     .from(TABLES.contacts)
     .select("*")
+    .eq("status", "active")
     .order("first_name");
 
   if (error) {
@@ -19,7 +20,7 @@ const fetchContacts = async (): Promise<Contact[]> => {
 const useFetchContacts = () => {
   return useQuery<Contact[]>({
     queryKey: ["fetchContacts"],
-    queryFn: fetchContacts
+    queryFn: fetchContacts,
   });
 };
 

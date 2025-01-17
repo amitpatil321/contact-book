@@ -50,6 +50,7 @@ const AddContact: React.FC = () => {
       id: uuid(),
       created_at:
         new Date().toISOString().slice(0, 19).replace("T", " ") + "+00",
+      status: "active",
     };
     mutate(contactForm, {
       onSuccess: (response) => {

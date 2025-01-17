@@ -3,16 +3,38 @@ import { TABLES } from "../constants/constants";
 import supabase from "../constants/supabase";
 import { Contact, Meta } from "../types/types";
 
-const saveContact = async (contact: Contact): Promise<{ contacts: Contact[]; meta: Meta[] }> => {
-  const { id, created_at, first_name, last_name, email, mobile, profile_pic, ...rest } = contact;
+const saveContact = async (
+  contact: Contact
+): Promise<{ contacts: Contact[]; meta: Meta[] }> => {
+  const {
+    id,
+    created_at,
+    first_name,
+    last_name,
+    email,
+    mobile,
+    profile_pic,
+    ...rest
+  } = contact;
 
   const { data: basicInfo, error: contactError } = await supabase
     .from(TABLES.contacts)
-    .insert({ id, created_at, first_name, last_name, email, mobile, profile_pic })
+    .insert({
+      id,
+      created_at,
+      first_name,
+      last_name,
+      email,
+      mobile,
+      profile_pic,
+      status,
+    })
     .select();
 
   if (contactError) {
-    throw new Error(`Error saving contact information: ${contactError.message}`);
+    throw new Error(
+      `Error saving contact information: ${contactError.message}`
+    );
   }
 
   let metaData: Meta[] = [];
@@ -34,14 +56,17 @@ const saveContact = async (contact: Contact): Promise<{ contacts: Contact[]; met
   return { contacts: basicInfo as Contact[], meta: metaData };
 };
 
-
 interface SaveContactResult {
   contacts: Contact[];
   meta: Meta[];
 }
 
-const useSaveContact = (): UseMutationResult<SaveContactResult, Error, Contact> => {
-   return useMutation<SaveContactResult, Error, Contact>({
+const useSaveContact = (): UseMutationResult<
+  SaveContactResult,
+  Error,
+  Contact
+> => {
+  return useMutation<SaveContactResult, Error, Contact>({
     mutationFn: async (contact) => await saveContact(contact),
   });
 };

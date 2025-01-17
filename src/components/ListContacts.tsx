@@ -129,7 +129,7 @@ const Contacts = () => {
                   <Tooltip autoHide target=".pi-trash" position="top" />
                 </div>
                 <div
-                  className={`flex justify-between items-center ${favoritesArr?.includes(
+                  className={`flex justify-between items-center w-[5%] ${favoritesArr?.includes(
                     id
                   )} ? "opacity-100" : "opacity-0`}
                 >
@@ -139,7 +139,7 @@ const Contacts = () => {
                     <i
                       className={`pi pi-heart text-gray-400 group-hover:opacity-100 transition-opacity duration-300 ${
                         favoritesArr?.includes(id)
-                          ? `text-pink-600 opacity-100`
+                          ? `text-pink-600 opacity-50`
                           : "opacity-0"
                       }`}
                       data-pr-tooltip={
