@@ -1,10 +1,14 @@
-import React, { useContext } from "react";
+import React, { Suspense, useContext } from "react";
 
 import { AppContext } from "../context/AppContext";
 import { AppContextType } from "../types/types";
-import AddContact from "./AddContact/AddContact";
-import ContactDetails from "./ContactDetails/ContactDetails";
 import ListContacts from "./ListContacts";
+import Loading from "./Loading";
+
+const ContactDetails = React.lazy(
+  () => import("./ContactDetails/ContactDetails")
+);
+const AddContact = React.lazy(() => import("./AddContact/AddContact"));
 
 const Dashboard: React.FC = () => {
   const { showAddContact } = useContext(AppContext) as AppContextType;
@@ -15,7 +19,15 @@ const Dashboard: React.FC = () => {
           <ListContacts />
         </div>
         <div className="md:block hidden bg-white p-4 rounded-lg w-[50%] h-[calc(100vh-110px)]">
-          {showAddContact ? <AddContact /> : <ContactDetails />}
+          {showAddContact ? (
+            <Suspense fallback={<Loading size="small" />}>
+              <AddContact />
+            </Suspense>
+          ) : (
+            <Suspense fallback={<Loading size="small" />}>
+              <ContactDetails />
+            </Suspense>
+          )}
         </div>
       </div>
     </div>
