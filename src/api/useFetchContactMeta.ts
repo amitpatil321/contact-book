@@ -10,8 +10,6 @@ const fetchUserMeta = async (contactId: string): Promise<Meta[]> => {
 
   if (error) throw new Error(error.message);
 
-    console.log(data);
-
   return data as Meta[];
 };
 

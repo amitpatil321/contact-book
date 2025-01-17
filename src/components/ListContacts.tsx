@@ -1,22 +1,34 @@
 import { motion } from "motion/react";
 import { Avatar } from "primereact/avatar";
+import { Button } from "primereact/button";
 import { Messages } from "primereact/messages";
 import { Tooltip } from "primereact/tooltip";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
-import { Button } from "primereact/button";
+import { useQueryClient } from "@tanstack/react-query";
 import useFetchContacts from "../api/useFetchContacts";
+import useFetchFavorites from "../api/useFetchFavorite";
+import useToggleFavorites from "../api/useToggleFavorite";
 import { AppContext } from "../context/AppContext";
+import { useToast } from "../hooks/useToast";
 import useStore from "../store/store";
 import { AppContextType } from "../types/types";
 import Loading from "./Loading";
 import Empty from "./NoContactSelected";
 
 const Contacts = () => {
+  const [favId, setFavId] = useState<string | null>(null);
   const { data: contacts, error, isLoading: loading } = useFetchContacts();
+  const { data: favData } = useFetchFavorites();
+  const { mutate: toggleFavorites, isPending: favLoading } =
+    useToggleFavorites();
   const msgs = useRef<Messages | null>(null);
   const { setSelectedContact } = useStore();
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
   const { setShowAddContact } = useContext(AppContext) as AppContextType;
+
+  const favoritesArr = favData ? favData[0]?.favorites?.split(",") : null;
 
   useEffect(() => {
     if (error && msgs.current) {
@@ -31,7 +43,7 @@ const Contacts = () => {
     }
   }, [error]);
 
-  if (!loading && !contacts?.length)
+  if (!loading && !contacts?.length && !error)
     return (
       <Empty
         message={
@@ -51,6 +63,28 @@ const Contacts = () => {
       />
     );
 
+  const handleFavorites = (event: React.MouseEvent, id: string) => {
+    setFavId(id);
+    // if id exists then remove otherwise add
+    const filtered = favoritesArr?.includes(id)
+      ? favoritesArr?.filter((each) => each !== id)
+      : [...(favoritesArr || []), id];
+
+    toggleFavorites(filtered.join(","), {
+      onSuccess: () => {
+        showToast("success", "Success", "Favorites saved successfully!");
+        queryClient.invalidateQueries({ queryKey: ["fetchFavorites"] });
+      },
+      onError: () => {
+        showToast("error", "Error", "Error saving favorites");
+      },
+      onSettled: () => setFavId(null),
+    });
+
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
   return (
     <>
       <Messages ref={msgs} />
@@ -59,7 +93,7 @@ const Contacts = () => {
       ) : (
         <ul>
           {contacts?.map((contact) => {
-            const { first_name, last_name, email, profile_pic } = contact;
+            const { id, first_name, last_name, email, profile_pic } = contact;
             return (
               <motion.li
                 key={contact.id}
@@ -75,25 +109,46 @@ const Contacts = () => {
                     className="align-bottom bg-purple-500 text-white"
                   />
                 </div>
-                <div className="flex flex-col w-[65%] md:w-[75%] xl:w-[85%]">
+                <div className="flex flex-col w-[65%] md:w-[75%] xl:w-[82%]">
                   <div className="drop-shadow-sm">
                     {first_name} {last_name}
                   </div>
                   <div className="align-top flex items-baseline text-gray-500 overflow-hidden">
-                    {/* <i className="mr-1 text-[12px] pi pi-envelope" /> */}
                     <span>{email}</span>
                   </div>
                 </div>
-                {/* <div className="flex justify-between items-start md:items-center opacity-0 group-hover:opacity-100 w-[10%] w-[15%] text-gray-400 transition-opacity duration-300"> */}
-                <div className="flex justify-between items-start md:items-center opacity-0 group-hover:opacity-100 w-[15%] md:w-[10%] xl:w-[7%] text-gray-400 transition-opacity duration-300">
+                <div className="flex justify-evenly items-start md:items-center opacity-0 group-hover:opacity-100 w-[15%] md:w-[10%] xl:w-[10%] text-gray-400 transition-opacity duration-300">
                   <i className="pi pi-pencil" data-pr-tooltip="Edit" />
                   <i className="pi pi-trash" data-pr-tooltip="Delete" />
                   <Tooltip
+                    autoHide
                     target=".pi-pencil"
                     position="top"
                     className="purple-tooltip"
                   />
-                  <Tooltip target=".pi-trash" position="top" />
+                  <Tooltip autoHide target=".pi-trash" position="top" />
+                </div>
+                <div
+                  className={`flex justify-between items-center ${favoritesArr?.includes(
+                    id
+                  )} ? "opacity-100" : "opacity-0`}
+                >
+                  {favId === id && favLoading ? (
+                    <Loading size="small" />
+                  ) : (
+                    <i
+                      className={`pi pi-heart text-gray-400 group-hover:opacity-100 transition-opacity duration-300 ${
+                        favoritesArr?.includes(id)
+                          ? `text-pink-600 opacity-100`
+                          : "opacity-0"
+                      }`}
+                      data-pr-tooltip={
+                        favoritesArr?.includes(id) ? "Unfavorite" : "Favorite"
+                      }
+                      onClick={(event) => handleFavorites(event, id)}
+                    />
+                  )}
+                  <Tooltip autoHide target=".pi-heart" position="top" />
                 </div>
               </motion.li>
             );

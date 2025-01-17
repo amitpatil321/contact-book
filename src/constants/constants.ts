@@ -6,4 +6,5 @@ export const TABLES: Record<TableNames, TableNames> = {
   contacts: "contacts",
   meta: "meta",
   labels: "labels",
+  favorites: "favorites",
 };

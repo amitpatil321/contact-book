@@ -10,7 +10,7 @@ const fetchContacts = async (): Promise<Contact[]> => {
     .order("first_name");
 
   if (error) {
-    throw new Error(error.message);
+    throw new Error("Error fetching contacts");
   }
 
   return data as Contact[];
