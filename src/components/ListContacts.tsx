@@ -3,32 +3,26 @@ import { Avatar } from "primereact/avatar";
 import { Button } from "primereact/button";
 import { Messages } from "primereact/messages";
 import { Tooltip } from "primereact/tooltip";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 
-import { useQueryClient } from "@tanstack/react-query";
 import useFetchContacts from "../api/useFetchContacts";
-import useFetchFavorites from "../api/useFetchFavorite";
-import useToggleFavorites from "../api/useToggleFavorite";
 import { AppContext } from "../context/AppContext";
-import { useToast } from "../hooks/useToast";
 import useStore from "../store/store";
 import { AppContextType } from "../types/types";
 import Loading from "./Loading";
 import Empty from "./NoContactSelected";
 
 const Contacts = () => {
-  const [favId, setFavId] = useState<string | null>(null);
   const { data: contacts, error, isLoading: loading } = useFetchContacts();
-  const { data: favData } = useFetchFavorites();
-  const { mutate: toggleFavorites, isPending: favLoading } =
-    useToggleFavorites();
   const msgs = useRef<Messages | null>(null);
   const { setSelectedContact } = useStore();
-  const queryClient = useQueryClient();
-  const { showToast } = useToast();
-  const { setShowAddContact } = useContext(AppContext) as AppContextType;
-
-  const favoritesArr = favData ? favData[0]?.favorites?.split(",") : null;
+  const {
+    setShowAddContact,
+    favoritesArr,
+    favId,
+    favLoading,
+    handleFavorites,
+  } = useContext(AppContext) as AppContextType;
 
   useEffect(() => {
     if (error && msgs.current) {
@@ -62,28 +56,6 @@ const Contacts = () => {
         }
       />
     );
-
-  const handleFavorites = (event: React.MouseEvent, id: string) => {
-    setFavId(id);
-    // if id exists then remove otherwise add
-    const filtered = favoritesArr?.includes(id)
-      ? favoritesArr?.filter((each) => each !== id)
-      : [...(favoritesArr || []), id];
-
-    toggleFavorites(filtered.join(","), {
-      onSuccess: () => {
-        showToast("success", "Success", "Favorites saved successfully!");
-        queryClient.invalidateQueries({ queryKey: ["fetchFavorites"] });
-      },
-      onError: () => {
-        showToast("error", "Error", "Error saving favorites");
-      },
-      onSettled: () => setFavId(null),
-    });
-
-    event.stopPropagation();
-    event.preventDefault();
-  };
 
   return (
     <>

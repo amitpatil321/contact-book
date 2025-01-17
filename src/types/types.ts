@@ -9,4 +9,8 @@ export type AppContextType = {
   showAddContact: boolean;
   setExpanded: (value: boolean) => void;
   setShowAddContact: (value: boolean) => void;
-}
+  favoritesArr: string[] | null | undefined;
+  favId: string | null;
+  favLoading: boolean;
+  handleFavorites: (event: React.MouseEvent, id: string) => void;
+};

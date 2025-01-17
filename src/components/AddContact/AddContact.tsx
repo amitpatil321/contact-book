@@ -37,6 +37,7 @@ const AddContact: React.FC = () => {
       birthdate: undefined,
     },
   });
+
   const { handleSubmit, reset } = methods;
 
   const submitForm = (formData: FormDataType) => {
