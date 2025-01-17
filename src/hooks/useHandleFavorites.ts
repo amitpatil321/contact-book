@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
+import messages from "../constants/messages";
 import { useToast } from "../hooks/useToast";
 
 type ToggleFavoritesOptions = {
@@ -27,11 +28,11 @@ const useHandleFavorites = (
 
       toggleFavorites(filtered.join(","), {
         onSuccess: () => {
-          showToast("success", "Success", "Favorites saved successfully!");
+          showToast("success", "Success", messages.favorites.saveSuccess);
           queryClientObj.invalidateQueries({ queryKey: ["fetchFavorites"] });
         },
         onError: () => {
-          showToast("error", "Error", "Error saving favorites");
+          showToast("error", "Error", messages.favorites.errorSaving);
         },
         onSettled: () => setFavId(null),
       });

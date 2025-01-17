@@ -1,5 +1,6 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { TABLES } from "../constants/constants";
+import messages from "../constants/messages";
 import supabase from "../constants/supabase";
 import { Favorites } from "../types/types";
 
@@ -8,7 +9,7 @@ const toggleFavorites = async (favArr: string): Promise<Favorites> => {
   const { data, error } = await supabase.from(TABLES.favorites).select("*");
 
   if (error) {
-    throw new Error("Failed to fetch favorites");
+    throw new Error(messages.favorites.errorFetching);
   }
 
   if (data.length === 0) {
@@ -19,7 +20,7 @@ const toggleFavorites = async (favArr: string): Promise<Favorites> => {
       .single();
 
     if (insertError) {
-      throw new Error("Failed to insert new favorites");
+      throw new Error(messages.favorites.errorInserting);
     }
 
     return insertedData as Favorites;
@@ -33,7 +34,7 @@ const toggleFavorites = async (favArr: string): Promise<Favorites> => {
     .single();
 
   if (updateError) {
-    throw new Error("Failed to update favorites");
+    throw new Error(messages.favorites.errorUpdating);
   }
 
   return updatedData as Favorites;

@@ -10,6 +10,7 @@ import { z } from "zod";
 
 import { useQueryClient } from "@tanstack/react-query";
 import useSaveContact from "../../api/useSaveContact";
+import messages from "../../constants/messages";
 import { AppContext } from "../../context/AppContext";
 import { formSchema } from "../../helpers/AddContactZodSchema";
 import { useToast } from "../../hooks/useToast";
@@ -57,7 +58,7 @@ const AddContact: React.FC = () => {
       onSuccess: (response) => {
         setLoading(false);
         queryClient.invalidateQueries({ queryKey: ["fetchContacts"] });
-        showToast("success", "Success", "Contact saved successfully!");
+        showToast("success", "Success", messages.contacts.saveSuccess);
         reset();
         setSelectedContact(response.contacts[0]);
         setShowAddContact(false);

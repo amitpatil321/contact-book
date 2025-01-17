@@ -1,5 +1,6 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { TABLES } from "../constants/constants";
+import messages from "../constants/messages";
 import supabase from "../constants/supabase";
 import { Contact, Meta } from "../types/types";
 
@@ -32,9 +33,7 @@ const saveContact = async (
     .select();
 
   if (contactError) {
-    throw new Error(
-      `Error saving contact information: ${contactError.message}`
-    );
+    throw new Error(messages.contacts.errorSaving);
   }
 
   let metaData: Meta[] = [];
@@ -46,7 +45,7 @@ const saveContact = async (
       .select();
 
     if (metaError) {
-      throw new Error(`Error saving meta information: ${metaError.message}`);
+      throw new Error(messages.meta.errorSaving);
     }
 
     metaData = metaResult as Meta[];
