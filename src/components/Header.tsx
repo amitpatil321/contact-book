@@ -16,11 +16,16 @@ const Header: React.FC = () => {
           icon="pi pi-bars border-transparent focus:border-transparent !outline-none focus:ring-0 "
           text
           onClick={() => setExpanded(!expanded)}
+          aria-label="Open navigation menu"
         />
         <Button
-          icon="pi pi-search border-transparent focus:border-transparent text-purple-500 bold focus:ring-0"
+          icon="pi pi-search border-transparent focus:border-transparent text-purple-600 bold focus:ring-0"
           text
+          aria-label="search contact"
         />
+        <label htmlFor="search-contact" className="sr-only">
+          Search contact
+        </label>
         <InputText
           placeholder="Search contact..."
           className="pl-0 border-transparent focus:border-transparent border-none focus:ring-0"
@@ -30,6 +35,7 @@ const Header: React.FC = () => {
         <Button
           icon="pi pi-plus"
           label="Add Contact"
+          className="text-purple-600"
           aria-label="Add contact"
           severity="help"
           size="small"

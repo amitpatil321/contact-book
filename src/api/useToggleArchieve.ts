@@ -3,15 +3,12 @@ import { TABLES } from "../constants/constants";
 import supabase from "../constants/supabase";
 import { Contact } from "../types/types";
 
-const archieveContact = async (
-  contactId: string,
-  currentStatus: string
-): Promise<Contact> => {
-  const status = currentStatus === "active" ? "archieved" : "active";
+const archieveContact = async (contact: Contact): Promise<Contact> => {
+  const status = contact.status === "active" ? "archieved" : "active";
   const { data, error } = await supabase
     .from(TABLES.contacts)
     .update({ status })
-    .eq("id", contactId)
+    .eq("id", contact.id)
     .single();
 
   if (error) throw new Error(error.message);
@@ -19,19 +16,9 @@ const archieveContact = async (
   return data as Contact;
 };
 
-interface ToggleArchiveVariables {
-  contactId: string;
-  currentStatus: string;
-}
-
-const useToggleArchieve = (): UseMutationResult<
-  Contact,
-  Error,
-  ToggleArchiveVariables
-> => {
-  return useMutation<Contact, Error, ToggleArchiveVariables>({
-    mutationFn: async ({ contactId, currentStatus }) =>
-      await archieveContact(contactId, currentStatus),
+const useToggleArchieve = (): UseMutationResult<Contact, Error, Contact> => {
+  return useMutation<Contact, Error, Contact>({
+    mutationFn: async (contact) => await archieveContact(contact),
   });
 };
 

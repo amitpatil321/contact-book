@@ -17,7 +17,6 @@ const ContactDetails = () => {
   const { selected: contact } = useStore();
   const msgs = useRef<Messages | null>(null);
   const contactId = contact?.id ? contact.id : undefined;
-
   const {
     data: meta = [],
     error,

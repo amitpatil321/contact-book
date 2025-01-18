@@ -3,12 +3,16 @@ import { Contact } from "../types/types";
 
 interface StoreState {
   selected: Contact | null;
-  setSelectedContact: (contact: Contact) => void;
+  setSelectedContact: (contact: Contact | null) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
   selected: null,
-  setSelectedContact: (contact: Contact) => set(() => ({ selected: contact })),
+  setSelectedContact: (contact: Contact | null) =>
+    set(() => {
+      console.log(contact);
+      return { selected: contact };
+    }),
 }));
 
 export default useStore;

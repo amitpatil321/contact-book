@@ -1,14 +1,16 @@
-import { useMemo, useState } from "react";
+import React, { Suspense, useMemo, useState } from "react";
 
 import useFetchFavorites from "./api/useFetchFavorite";
 import useToggleFavorites from "./api/useToggleFavorite";
-import ListContacts from "./components/Dashboard";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import { AppContext } from "./context/AppContext";
 import useHandleFavorites from "./hooks/useHandleFavorites";
 
+const ListContacts = React.lazy(() => import("./components/Dashboard"));
+
 import "./App.css";
+import Loading from "./components/Loading";
 
 function App() {
   const { data: favData } = useFetchFavorites();
@@ -55,7 +57,9 @@ function App() {
         <Sidebar />
         <div className="relative flex flex-col flex-1 p-4 h-full overflow-x-hidden overflow-y-auto">
           <Header />
-          <ListContacts />
+          <Suspense fallback={<Loading className="mt-6" size="small" />}>
+            <ListContacts />
+          </Suspense>
         </div>
       </AppContext.Provider>
     </div>

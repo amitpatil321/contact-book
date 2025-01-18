@@ -2,9 +2,10 @@ import React, { Suspense, useContext } from "react";
 
 import { AppContext } from "../context/AppContext";
 import { AppContextType } from "../types/types";
-import ListContacts from "./ListContacts";
+// import ListContacts from "./ListContacts";
 import Loading from "./Loading";
 
+const ListContacts = React.lazy(() => import("./ListContacts"));
 const ContactDetails = React.lazy(
   () => import("./ContactDetails/ContactDetails")
 );
@@ -16,7 +17,9 @@ const Dashboard: React.FC = () => {
     <div className="mt-3 rounded-lg w-full h-full">
       <div className="flex gap-4 w-full">
         <div className="bg-white p-4 pt-3 rounded-lg w-[100%] md:w-[50%] h-[calc(100vh-110px)] overflow-y-auto">
-          <ListContacts />
+          <Suspense fallback={<Loading size="small" />}>
+            <ListContacts />
+          </Suspense>
         </div>
         <div className="md:block hidden bg-white p-4 rounded-lg w-[50%] h-[calc(100vh-110px)]">
           {showAddContact ? (

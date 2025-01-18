@@ -5,6 +5,8 @@ export default {
     missingId: "Contact id is missing",
     errorFetching: "Error fetching contacts",
     errorSaving: "Error saving contact information",
+    archieveSuccess: "Contact archived successfully",
+    archieveError: "Error archiving contact",
   },
   favorites: {
     saveSuccess: "Favorites saved successfully!",
