@@ -11,7 +11,7 @@
 
 #root {
   margin: 0 auto;
-  font-family: ubuntu, "Open Sans", "Helvetica Neue", sans-serif !important;
+  font-family: poppins, "Open Sans", "Helvetica Neue", sans-serif !important;
   --surface-ground: #fff;
   font-size: 14px;
   color: #707070 !important;
@@ -60,7 +60,7 @@ h6 {
 
 .p-component,
 .pi {
-  font-family: ubuntu, "primeicons", "Open Sans", "Helvetica Neue", sans-serif !important;
+  font-family: poppins, "primeicons", "Open Sans", "Helvetica Neue", sans-serif !important;
 }
 
 .p-button:focus {
