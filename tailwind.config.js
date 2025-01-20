@@ -4,8 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        ubuntu: ["ubuntu"],
-        // Add more custom font families as needed
+        poppins: ["poppins"],
       },
     },
   },

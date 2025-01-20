@@ -2,7 +2,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PrimeReactProvider } from "primereact/api";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
+
 import { ToastProvider } from "./context/ToastContext";
+import AppRoutes from "./routes/routes.tsx";
 
 import App from "./App.tsx";
 import "./index.css";
@@ -29,6 +31,7 @@ createRoot(document.getElementById("root")!).render(
     <PrimeReactProvider>
       <ToastProvider>
         <QueryClientProvider client={queryClient}>
+          <AppRoutes />
           <App />
         </QueryClientProvider>
       </ToastProvider>

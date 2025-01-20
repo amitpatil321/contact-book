@@ -1,19 +1,24 @@
 import { motion } from "motion/react";
 import { Avatar } from "primereact/avatar";
-import { Button } from "primereact/button";
 import { Messages } from "primereact/messages";
 import { Tooltip } from "primereact/tooltip";
 import { useContext, useEffect, useRef } from "react";
 
+import { Button } from "primereact/button";
 import useFetchContacts from "../api/useFetchContacts";
+import messages from "../constants/messages";
 import { AppContext } from "../context/AppContext";
 import useStore from "../store/store";
 import { AppContextType } from "../types/types";
 import Loading from "./Loading";
-import Empty from "./NoContactSelected";
+import NoData from "./NoData";
 
 const Contacts = () => {
-  const { data: contacts, error, isLoading: loading } = useFetchContacts();
+  const {
+    data: contacts,
+    error,
+    isLoading: loading,
+  } = useFetchContacts("active");
   const msgs = useRef<Messages | null>(null);
   const { setSelectedContact } = useStore();
   const {
@@ -39,20 +44,18 @@ const Contacts = () => {
 
   if (!loading && !contacts?.length && !error)
     return (
-      <Empty
-        message={
-          <div className="flex flex-col items-center">
-            <span>No conatcts, Lets create one</span>
-            <Button
-              icon="pi pi-plus"
-              label="Add Contact"
-              aria-label="Add contact"
-              severity="help"
-              size="small"
-              text
-              onClick={() => setShowAddContact(true)}
-            />
-          </div>
+      <NoData
+        message={messages.contacts.noContacts}
+        actionComponent={
+          <Button
+            icon="pi pi-plus"
+            label="Add Contact"
+            aria-label="Add contact"
+            severity="help"
+            size="small"
+            text
+            onClick={() => setShowAddContact(true)}
+          />
         }
       />
     );

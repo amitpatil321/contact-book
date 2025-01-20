@@ -4,13 +4,15 @@ export type Contact = Database["public"]["Tables"]["contacts"]["Row"];
 export type Meta = Database["public"]["Tables"]["meta"]["Row"];
 export type Favorites = Database["public"]["Tables"]["favorites"]["Row"];
 
-export type AppContextType = {
+export interface AppContextType {
   expanded: boolean;
+  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   showAddContact: boolean;
-  setExpanded: (value: boolean) => void;
-  setShowAddContact: (value: boolean) => void;
-  favoritesArr: string[] | null | undefined;
+  setShowAddContact: React.Dispatch<React.SetStateAction<boolean>>;
+  favoritesArr: string[] | null;
   favId: string | null;
   favLoading: boolean;
   handleFavorites: (event: React.MouseEvent, id: string) => void;
-};
+}
+
+export type ContactStatusTypes = "active" | "archived" | "deleted";

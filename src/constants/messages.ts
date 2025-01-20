@@ -11,6 +11,8 @@ export default {
     deleteSuccess: "Contact deleted successfully!",
     confirmArchieve: "Are you sure you want to archieve this contact?",
     confirmDelete: "Are you sure you want to delete this contact?",
+    noContacts: "No conatcts to show, Lets create one",
+    noFavorites: "No conatcts to favorited",
   },
   favorites: {
     saveSuccess: "Favorites saved successfully!",

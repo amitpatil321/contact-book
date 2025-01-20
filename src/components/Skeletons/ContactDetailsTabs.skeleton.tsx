@@ -3,7 +3,7 @@ import { Skeleton } from "primereact/skeleton";
 const ContactDetailsTabs = () => {
   return (
     <>
-      <div className="flex gap-6 mt-11 pb-2 pl-4">
+      <div className="flex gap-6 mt-14 pb-2 pl-4">
         <Skeleton width="7rem" height="2rem"></Skeleton>
         <Skeleton width="7rem" height="2rem"></Skeleton>
         <Skeleton width="7rem" height="2rem"></Skeleton>
