@@ -10,7 +10,6 @@ const useStore = create<StoreState>((set) => ({
   selected: null,
   setSelectedContact: (contact: Contact | null) =>
     set(() => {
-      console.log(contact);
       return { selected: contact };
     }),
 }));

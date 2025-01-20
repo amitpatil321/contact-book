@@ -5,8 +5,12 @@ export default {
     missingId: "Contact id is missing",
     errorFetching: "Error fetching contacts",
     errorSaving: "Error saving contact information",
-    archieveSuccess: "Contact archived successfully",
+    archieveSuccess: "Contact archived successfully!",
     archieveError: "Error archiving contact",
+    deleteError: "Error deleting contact, Please try again!",
+    deleteSuccess: "Contact deleted successfully!",
+    confirmArchieve: "Are you sure you want to archieve this contact?",
+    confirmDelete: "Are you sure you want to delete this contact?",
   },
   favorites: {
     saveSuccess: "Favorites saved successfully!",
