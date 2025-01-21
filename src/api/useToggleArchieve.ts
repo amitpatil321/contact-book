@@ -4,7 +4,7 @@ import supabase from "../constants/supabase";
 import { Contact } from "../types/types";
 
 const archieveContact = async (contact: Contact): Promise<Contact> => {
-  const status = contact.status === "active" ? "archieved" : "active";
+  const status = contact.status === "active" ? "archived" : "active";
   const { data, error } = await supabase
     .from(TABLES.contacts)
     .update({ status })
