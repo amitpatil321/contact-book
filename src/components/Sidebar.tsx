@@ -85,6 +85,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   expanded,
 }) => {
   const { icon, label, link } = item;
+  const { setShowAddContact } = useContext(AppContext) as AppContextType;
+
   return (
     <Link to={link} className="flex items-center w-full" aria-label={label}>
       <li
@@ -111,7 +113,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           >
             <button
               aria-label="Add new contact"
-              className="hover:bg-purple-300 p-1.5 rounded-lg addcontact pi pi-plus"
+              className="hover:bg-purple-400 p-1.5 pt-2 rounded-lg addcontact pi pi-plus"
+              onClick={() => setShowAddContact(true)}
             />
             <Tooltip target=".addcontact" position="top" />
           </div>
