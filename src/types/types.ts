@@ -9,7 +9,7 @@ export interface AppContextType {
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   showAddContact: boolean;
   setShowAddContact: React.Dispatch<React.SetStateAction<boolean>>;
-  favoritesArr: string[] | null;
+  favoritesArr: string[] | null | undefined;
   favId: string | null;
   favLoading: boolean;
   handleFavorites: (event: React.MouseEvent, id: string) => void;
