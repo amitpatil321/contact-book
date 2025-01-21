@@ -9,16 +9,12 @@ import useFetchContacts from "../api/useFetchContacts";
 import messages from "../constants/messages";
 import { AppContext } from "../context/AppContext";
 import useStore from "../store/store";
-import { AppContextType } from "../types/types";
+import { AppContextType, ContactStatusTypes } from "../types/types";
 import Loading from "./Loading";
 import NoData from "./NoData";
 
-const Contacts = () => {
-  const {
-    data: contacts,
-    error,
-    isLoading: loading,
-  } = useFetchContacts("active");
+const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
+  const { data: contacts, error, isLoading: loading } = useFetchContacts(type);
   const msgs = useRef<Messages | null>(null);
   const { setSelectedContact } = useStore();
   const {
