@@ -86,15 +86,15 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 }) => {
   const { icon, label, link } = item;
   return (
-    <li
-      className={`group relative flex items-center font-medium rounded-md cursor-pointer py-2 px-3 my-1
+    <Link to={link} className="flex items-center w-full" aria-label={label}>
+      <li
+        className={`group relative flex items-center font-medium rounded-md cursor-pointer py-2 px-3 my-1
       text-slate-400 h-10 ${
         active
           ? "bg-gradient-to-tr from-purple-500 to-purple-300 text-white hover:text-white"
           : "hover:bg-purple-50"
       } hover:text-purple-500 duration-500 transition-all`}
-    >
-      <Link to={link} className="flex items-center w-full" aria-label={label}>
+      >
         <i className={`pi ${icon} text-lg`} aria-hidden="true"></i>
         <span
           className={`${expanded ? "block pl-2 w-52" : "hidden w-0"}`}
@@ -102,31 +102,31 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         >
           {label}
         </span>
-      </Link>
 
-      {label === "Contacts" && (
-        <div
-          className={`absolute right-2 opacity-65 hover:opacity-100 transition-opacity duration-300 ${
-            expanded ? "block" : "hidden"
-          }`}
-        >
-          <button
-            aria-label="Add new contact"
-            className="hover:bg-purple-300 p-1.5 rounded-lg addcontact pi pi-plus"
-          />
-          <Tooltip target=".addcontact" position="top" />
-        </div>
-      )}
+        {label === "Contacts" && (
+          <div
+            className={`absolute right-2 opacity-65 hover:opacity-100 transition-opacity duration-300 ${
+              expanded ? "block" : "hidden"
+            }`}
+          >
+            <button
+              aria-label="Add new contact"
+              className="hover:bg-purple-300 p-1.5 rounded-lg addcontact pi pi-plus"
+            />
+            <Tooltip target=".addcontact" position="top" />
+          </div>
+        )}
 
-      {!expanded && (
-        <div
-          role="tooltip"
-          className="group-hover:visible group-hover:ml-5 left-full z-50 absolute bg-purple-500 px-3 py-1 rounded-lg text-sm text-white transition-all -translate-x-3 group-hover:translate-x-0 invisible"
-        >
-          {label}
-        </div>
-      )}
-    </li>
+        {!expanded && (
+          <div
+            role="tooltip"
+            className="group-hover:visible group-hover:ml-5 left-full z-50 absolute bg-purple-500 px-3 py-1 rounded-lg text-sm text-white transition-all -translate-x-3 group-hover:translate-x-0 invisible"
+          >
+            {label}
+          </div>
+        )}
+      </li>
+    </Link>
   );
 };
 

@@ -5,7 +5,6 @@ import { BrowserRouter } from "react-router";
 import { AppContextProvider } from "./providers/AppContextProvider.tsx";
 import { QueryClientProvider } from "./providers/QueryClientProvider.tsx";
 import { ToastContextProvider } from "./providers/ToastContextProvider.tsx";
-import AppRoutes from "./routes/routes.tsx";
 
 import App from "./App.tsx";
 import "./index.css";
@@ -21,7 +20,6 @@ createRoot(document.getElementById("root")!).render(
       <ToastContextProvider>
         <QueryClientProvider>
           <AppContextProvider>
-            <AppRoutes />
             <App />
           </AppContextProvider>
         </QueryClientProvider>
