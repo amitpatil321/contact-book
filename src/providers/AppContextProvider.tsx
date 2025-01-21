@@ -10,10 +10,16 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [showAddContact, setShowAddContact] = useState<boolean>(false);
 
-  const favoritesArr = useMemo(
-    () => (favData ? favData[0]?.favorites?.split(",") : []),
-    [favData]
-  );
+  const favoritesArr = useMemo(() => {
+    if (!favData || !favData[0]?.favorites) {
+      return [];
+    }
+
+    const splitFavorites = favData[0]?.favorites.split(",");
+    return splitFavorites.length === 1 && splitFavorites[0] === ""
+      ? []
+      : splitFavorites;
+  }, [favData]);
 
   const { mutate: toggleFavorites, isPending: favLoading } =
     useToggleFavorites();
