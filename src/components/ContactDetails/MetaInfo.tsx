@@ -45,7 +45,7 @@ const MetaInfo: React.FC<{
   ].some((field) => field != null);
 
   return (
-    <div className="mt-12">
+    <div>
       <Messages ref={msgs} />
       {hasAnyField ? (
         <TabView>
