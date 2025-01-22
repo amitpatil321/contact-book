@@ -71,16 +71,21 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                 className="align-top flex flex-row bg-white hover:bg-purple-100 mb-2 px-3 py-3 rounded-lg transition duration-500 cursor-pointer group"
                 onClick={() => setSelectedContact(contact)}
               >
-                <div className="w-[20%] md:w-[15%] xl:w-[8%]">
+                <div className="w-[65px]">
                   <Avatar
                     image={profile_pic ?? ""}
                     label={first_name?.[0] ?? "U"}
                     size="large"
                     shape="circle"
+                    style={{
+                      width: "48px",
+                      height: "48px",
+                      objectFit: "cover",
+                    }}
                     className="align-bottom bg-purple-500 text-white"
                   />
                 </div>
-                <div className="flex flex-col w-[65%] md:w-[75%] xl:w-[82%]">
+                <div className="flex flex-col w-[75%]">
                   <div className="drop-shadow-sm">
                     {first_name} {last_name}
                   </div>
@@ -88,9 +93,15 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                     <span>{email}</span>
                   </div>
                 </div>
-                <div className="flex justify-evenly items-start md:items-center opacity-0 group-hover:opacity-100 w-[15%] md:w-[10%] xl:w-[10%] text-gray-400 transition-opacity duration-300">
+                <div className="flex justify-evenly items-start md:items-center opacity-0 group-hover:opacity-100 w-[12%] text-gray-400 transition-opacity duration-300">
                   <i className="pi pi-pencil" data-pr-tooltip="Edit" />
                   <i className="pi pi-trash" data-pr-tooltip="Delete" />
+                  <i
+                    className="pi pi-box"
+                    data-pr-tooltip={
+                      contact.status === "archived" ? "UnArchive" : "Archive"
+                    }
+                  />
                   <Tooltip
                     autoHide
                     target=".pi-pencil"
@@ -98,6 +109,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                     className="purple-tooltip"
                   />
                   <Tooltip autoHide target=".pi-trash" position="top" />
+                  <Tooltip autoHide target=".pi-box" position="top" />
                 </div>
                 <div
                   className={`flex justify-between items-center w-[5%] ${favoritesArr?.includes(

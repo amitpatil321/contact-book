@@ -94,6 +94,8 @@ const ActionButton: React.FC<ActionButtonProps> = ({ contact }) => {
           <div className="w-12">
             <Loading size="small" />
           </div>
+        ) : contact.status === "archived" ? (
+          "UnArchive"
         ) : (
           "Archive"
         )}

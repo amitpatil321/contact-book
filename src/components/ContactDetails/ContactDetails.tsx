@@ -48,8 +48,8 @@ const ContactDetails = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="flex items-start gap-6 h-[150px]">
-        <div className="text-center">
+      <div className="flex justify-center items-start gap-6 h-[200px]">
+        <div className="w-[30%] text-center">
           <div className="inline-block">
             <Avatar
               image={profile_pic ?? ""}
@@ -58,6 +58,7 @@ const ContactDetails = () => {
               style={{
                 width: "150px",
                 height: "150px",
+                objectFit: "cover",
               }}
               className="bg-purple-500 text-6xl text-white"
             />
