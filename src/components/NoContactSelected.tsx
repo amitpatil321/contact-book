@@ -8,7 +8,7 @@ const Empty: React.FC<{ message: string | ReactNode }> = ({ message }) => {
         alt="no contact selected"
         className="h-40"
       />
-      <h5 className="font-semibold text-gray-400 text-xl">{message}</h5>
+      <h5 className="font-semibold text-gray-500 text-xl">{message}</h5>
     </div>
   );
 };
