@@ -9,6 +9,8 @@ export default {
     archieveError: "Error archiving contact",
     deleteError: "Error deleting contact, Please try again!",
     deleteSuccess: "Contact deleted successfully!",
+    restoreError: "Error restoring contact, Please try again!",
+    restoreSuccess: "Contact restored successfully!",
     confirmArchieve: "Are you sure you want to archieve this contact?",
     confirmDelete: "Are you sure you want to delete this contact?",
     noContacts: "No conatcts to show, Lets create one",

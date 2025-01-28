@@ -12,7 +12,18 @@ export interface AppContextType {
   favoritesArr: string[] | null | undefined;
   favId: string | null;
   favLoading: boolean;
-  handleFavorites: (event: React.MouseEvent, id: string) => void;
+  // handleFavorites: (event: React.MouseEvent, id: string) => void;
+  archieveLoading: boolean;
+  deleteLoading: boolean;
+  handleFavoriteClick: (event: React.MouseEvent, contactId: string) => void;
+  handleDeleteClick: (
+    event: React.MouseEvent<HTMLElement>,
+    contact: Contact
+  ) => void;
+  handleToggleArchieveClick: (
+    event: React.MouseEvent<HTMLElement>,
+    contact: Contact
+  ) => void;
 }
 
 export type ContactStatusTypes = "active" | "archived" | "deleted";
