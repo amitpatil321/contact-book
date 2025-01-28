@@ -4,21 +4,37 @@ import messages from "../constants/messages";
 import supabase from "../constants/supabase";
 import { Contact } from "../types/types";
 
-const deleteContact = async (contactId: string): Promise<Contact> => {
-  const { data, error } = await supabase
+type DeleteContactResponse = "active" | "deleted";
+
+const deleteContact = async (
+  contact: Contact
+): Promise<DeleteContactResponse> => {
+  const status: "active" | "deleted" =
+    contact.status === "deleted" ? "active" : "deleted";
+
+  const { error } = await supabase
     .from(TABLES.contacts)
-    .update({ status: "deleted" })
-    .eq("id", contactId)
+    .update({ status })
+    .eq("id", contact.id)
     .single();
 
-  if (error) throw new Error(messages.contacts.deleteError);
+  if (error)
+    throw new Error(
+      status === "active"
+        ? messages.contacts.deleteError
+        : messages.contacts.restoreError
+    );
 
-  return data as Contact;
+  return status;
 };
 
-const useDeleteContact = (): UseMutationResult<Contact, Error, string> => {
-  return useMutation<Contact, Error, string>({
-    mutationFn: async (contactId) => deleteContact(contactId),
+const useDeleteContact = (): UseMutationResult<
+  DeleteContactResponse,
+  Error,
+  Contact
+> => {
+  return useMutation<DeleteContactResponse, Error, Contact>({
+    mutationFn: async (contact) => deleteContact(contact),
   });
 };
 
