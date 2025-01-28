@@ -5,7 +5,9 @@ import { Tooltip } from "primereact/tooltip";
 import { useContext, useEffect, useRef } from "react";
 
 import { Button } from "primereact/button";
+import { useLocation } from "react-router";
 import useFetchContacts from "../api/useFetchContacts";
+import { PAGES } from "../constants/constants";
 import messages from "../constants/messages";
 import { AppContext } from "../context/AppContext";
 import useStore from "../store/store";
@@ -22,8 +24,11 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
     favoritesArr,
     favId,
     favLoading,
-    handleFavorites,
+    handleFavoriteClick,
+    handleDeleteClick,
   } = useContext(AppContext) as AppContextType;
+
+  const location = useLocation();
 
   useEffect(() => {
     if (error && msgs.current) {
@@ -71,7 +76,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                 className="align-top flex flex-row bg-white hover:bg-purple-100 mb-2 px-3 py-3 rounded-lg transition duration-500 cursor-pointer group"
                 onClick={() => setSelectedContact(contact)}
               >
-                <div className="w-[65px]">
+                <div className="w-[7%]">
                   <Avatar
                     image={profile_pic ?? ""}
                     label={first_name?.[0] ?? "U"}
@@ -85,7 +90,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                     className="align-bottom bg-purple-500 text-white"
                   />
                 </div>
-                <div className="flex flex-col w-[75%]">
+                <div className="flex flex-col w-[80%]">
                   <div className="drop-shadow-sm">
                     {first_name} {last_name}
                   </div>
@@ -93,15 +98,27 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                     <span>{email}</span>
                   </div>
                 </div>
-                <div className="flex justify-evenly items-start md:items-center opacity-0 group-hover:opacity-100 w-[12%] text-gray-400 transition-opacity duration-300">
-                  <i className="pi pi-pencil" data-pr-tooltip="Edit" />
-                  <i className="pi pi-trash" data-pr-tooltip="Delete" />
+                <div className="flex justify-evenly items-start md:items-center opacity-0 group-hover:opacity-100 w-[13%] text-gray-400 transition-opacity duration-300">
+                  {![PAGES.deleted].includes(location.pathname) ? (
+                    <i className="pi pi-pencil" data-pr-tooltip="Edit" />
+                  ) : null}
                   <i
-                    className="pi pi-box"
-                    data-pr-tooltip={
-                      contact.status === "archived" ? "UnArchive" : "Archive"
-                    }
+                    className={`pi pi-trash hover:text-red-300 `}
+                    data-pr-tooltip={`${
+                      contact.status === "deleted" ? "Restore" : "Delete"
+                    }`}
+                    onClick={(event) => {
+                      handleDeleteClick(event, contact);
+                    }}
                   />
+                  {![PAGES.deleted].includes(location.pathname) ? (
+                    <i
+                      className="pi pi-box"
+                      data-pr-tooltip={
+                        contact.status === "archived" ? "UnArchive" : "Archive"
+                      }
+                    />
+                  ) : null}
                   <Tooltip
                     autoHide
                     target=".pi-pencil"
@@ -111,28 +128,32 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                   <Tooltip autoHide target=".pi-trash" position="top" />
                   <Tooltip autoHide target=".pi-box" position="top" />
                 </div>
-                <div
-                  className={`flex justify-between items-center w-[5%] ${favoritesArr?.includes(
-                    id
-                  )} ? "opacity-100" : "opacity-0`}
-                >
-                  {favId === id && favLoading ? (
-                    <Loading size="small" />
-                  ) : (
-                    <i
-                      className={`pi pi-heart text-gray-400 group-hover:opacity-100 transition-opacity duration-300 ${
-                        favoritesArr?.includes(id)
-                          ? `text-pink-600 opacity-50`
-                          : "opacity-0"
-                      }`}
-                      data-pr-tooltip={
-                        favoritesArr?.includes(id) ? "Unfavorite" : "Favorite"
-                      }
-                      onClick={(event) => handleFavorites(event, id)}
-                    />
-                  )}
-                  <Tooltip autoHide target=".pi-heart" position="top" />
-                </div>
+                {[PAGES.dashboard, PAGES.favorites].includes(
+                  location.pathname
+                ) ? (
+                  <div
+                    className={`flex justify-between items-center w-[5%] ${favoritesArr?.includes(
+                      id
+                    )} ? "opacity-100" : "opacity-0`}
+                  >
+                    {favId === id && favLoading ? (
+                      <Loading size="small" />
+                    ) : (
+                      <i
+                        className={`pi pi-heart text-gray-400 group-hover:opacity-100 hover:text-pink-300 transition-opacity duration-300 ${
+                          favoritesArr?.includes(id)
+                            ? `text-pink-600 opacity-50`
+                            : "opacity-0"
+                        }`}
+                        data-pr-tooltip={
+                          favoritesArr?.includes(id) ? "Unfavorite" : "Favorite"
+                        }
+                        onClick={(event) => handleFavoriteClick(event, id)}
+                      />
+                    )}
+                    <Tooltip autoHide target=".pi-heart" position="top" />
+                  </div>
+                ) : null}
               </motion.li>
             );
           })}
