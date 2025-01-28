@@ -6,7 +6,7 @@ import { Avatar } from "primereact/avatar";
 import useFetchContactMeta from "../../api/useFetchContactMeta";
 import messages from "../../constants/messages";
 import useStore from "../../store/store";
-import Empty from "../NoContactSelected";
+import NoData from "../NoData";
 import CompanyDesignation from "../Skeletons/CompanyDesignation.skeleton";
 import ContactDetailsTabs from "../Skeletons/ContactDetailsTabs.skeleton";
 import ActionButton from "./ActionButtons";
@@ -23,7 +23,7 @@ const ContactDetails = () => {
     isLoading: loading,
   } = useFetchContactMeta(contactId);
 
-  if (!contact) return <Empty message={messages.contacts.nothingSelected} />;
+  if (!contact) return <NoData message={messages.contacts.nothingSelected} />;
 
   const { first_name, last_name, profile_pic, email, mobile } = contact;
   const { work_company, work_designation } = meta[0] || {};
@@ -43,10 +43,17 @@ const ContactDetails = () => {
     <motion.div
       className="flex flex-col"
       key={contact.id}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      // initial={{ opacity: 0 }}
+      // animate={{ opacity: 1 }}
+      // exit={{ opacity: 0 }}
+      // transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{
+        duration: 0.5,
+        ease: "easeInOut",
+      }}
     >
       <div className="flex justify-center items-start gap-6 h-[200px]">
         <div className="w-[30%] text-center">
