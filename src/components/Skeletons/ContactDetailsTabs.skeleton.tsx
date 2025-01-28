@@ -10,7 +10,7 @@ const ContactDetailsTabs = () => {
         <Skeleton width="7rem" height="2rem"></Skeleton>
       </div>
       <hr />
-      <div className="flex flex-row gap-2 pt-6 pl-6">
+      <div className="flex flex-row gap-2 pt-10 pl-6">
         <div>
           <Skeleton width="5rem" height="0.6rem" className="mb-2"></Skeleton>
           <Skeleton width="6rem" height="0.6rem" className="mb-2"></Skeleton>

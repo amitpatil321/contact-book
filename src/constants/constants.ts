@@ -11,8 +11,8 @@ export const TABLES: Record<TableNames, TableNames> = {
 };
 
 export const PAGES: Record<RouteNames, string> = {
-  dashboard: "",
-  favorites: "favorites",
-  archived: "archived",
-  deleted: "deleted",
+  dashboard: "/",
+  favorites: "/favorites",
+  archived: "/archived",
+  deleted: "/deleted",
 };

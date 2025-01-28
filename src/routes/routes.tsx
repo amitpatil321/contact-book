@@ -1,7 +1,8 @@
 import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router";
 
+import { Route, Routes } from "react-router";
 import Layout from "../components/Layout/Layout";
+import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import { PAGES } from "../constants/constants";
 
@@ -12,7 +13,13 @@ const Favorites = lazy(() => import("../pages/Favorites"));
 
 const AppRoutes = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center h-screen">
+          <Loading size="medium" />
+        </div>
+      }
+    >
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Active type="active" />} />

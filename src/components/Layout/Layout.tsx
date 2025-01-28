@@ -1,6 +1,7 @@
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 
+import { ConfirmPopup } from "primereact/confirmpopup";
 import { Outlet } from "react-router";
 import "../../App.css";
 
@@ -12,6 +13,7 @@ function Layout() {
         <Header />
         <div className="mt-4">
           <Outlet />
+          <ConfirmPopup />
         </div>
       </div>
     </div>
