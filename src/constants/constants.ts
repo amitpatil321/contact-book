@@ -16,3 +16,17 @@ export const PAGES: Record<RouteNames, string> = {
   archived: "/archived",
   deleted: "/deleted",
 };
+
+// export const VALID_ACTIONS = {
+//   edit: ["active"],
+//   delete: ["active"],
+//   archieve: ["active"],
+//   favorite: ["active"],
+// };
+
+export const VALID_ACTIONS = {
+  active: ["edit", "delete", "archive", "favorite"],
+  favorite: ["edit", "delete", "archive", "favorite"],
+  archived: ["edit", "delete", "archive"],
+  deleted: ["delete"],
+};

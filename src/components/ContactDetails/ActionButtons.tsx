@@ -66,6 +66,8 @@ const ActionButton: React.FC<ActionButtonProps> = ({ contact }) => {
           <div className="w-10">
             <Loading size="small" />
           </div>
+        ) : contact.status === "deleted" ? (
+          "Restore"
         ) : (
           "Delete"
         )}

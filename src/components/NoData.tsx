@@ -22,7 +22,9 @@ const NoData: React.FC<{
           className="h-40"
         />
         <div className="text-center">
-          <h5 className="font-semibold text-gray-500 text-xl">{message}</h5>
+          <h5 className="mt-4 font-semibold text-gray-500 text-xl">
+            {message}
+          </h5>
           {actionComponent && <div className="mt-2">{actionComponent}</div>}
         </div>
         {/* <h5 className="font-semibold text-gray-500 text-xl">{message}</h5> */}

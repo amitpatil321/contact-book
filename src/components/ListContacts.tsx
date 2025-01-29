@@ -5,13 +5,12 @@ import { Tooltip } from "primereact/tooltip";
 import { useContext, useEffect, useRef } from "react";
 
 import { Button } from "primereact/button";
-import { useLocation } from "react-router";
 import useFetchContacts from "../api/useFetchContacts";
-import { PAGES } from "../constants/constants";
+import { VALID_ACTIONS } from "../constants/constants";
 import messages from "../constants/messages";
 import { AppContext } from "../context/AppContext";
 import useStore from "../store/store";
-import { AppContextType, ContactStatusTypes } from "../types/types";
+import { AppContextType, Contact, ContactStatusTypes } from "../types/types";
 import Loading from "./Loading";
 import NoData from "./NoData";
 
@@ -19,16 +18,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
   const { data: contacts, error, isLoading: loading } = useFetchContacts(type);
   const msgs = useRef<Messages | null>(null);
   const { setSelectedContact } = useStore();
-  const {
-    setShowAddContact,
-    favoritesArr,
-    favId,
-    favLoading,
-    handleFavoriteClick,
-    handleDeleteClick,
-  } = useContext(AppContext) as AppContextType;
-
-  const location = useLocation();
+  const { setShowAddContact } = useContext(AppContext) as AppContextType;
 
   useEffect(() => {
     if (error && msgs.current) {
@@ -69,11 +59,11 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
       ) : (
         <ul>
           {contacts?.map((contact) => {
-            const { id, first_name, last_name, email, profile_pic } = contact;
+            const { first_name, last_name, email, profile_pic } = contact;
             return (
               <motion.li
                 key={contact.id}
-                className="align-top flex flex-row bg-white hover:bg-purple-100 mb-2 px-3 py-3 rounded-lg transition duration-500 cursor-pointer group"
+                className="group align-top flex flex-row bg-white hover:bg-purple-100 mb-2 px-3 py-3 rounded-lg transition duration-500 cursor-pointer"
                 onClick={() => setSelectedContact(contact)}
               >
                 <div className="w-[7%]">
@@ -98,66 +88,97 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                     <span>{email}</span>
                   </div>
                 </div>
-                <div className="flex justify-evenly items-start md:items-center opacity-0 group-hover:opacity-100 w-[13%] text-gray-400 transition-opacity duration-300">
-                  {![PAGES.deleted].includes(location.pathname) ? (
-                    <i className="pi pi-pencil" data-pr-tooltip="Edit" />
-                  ) : null}
-                  <i
-                    className={`pi pi-trash hover:text-red-300 `}
-                    data-pr-tooltip={`${
-                      contact.status === "deleted" ? "Restore" : "Delete"
-                    }`}
-                    onClick={(event) => {
-                      handleDeleteClick(event, contact);
-                    }}
-                  />
-                  {![PAGES.deleted].includes(location.pathname) ? (
-                    <i
-                      className="pi pi-box"
-                      data-pr-tooltip={
-                        contact.status === "archived" ? "UnArchive" : "Archive"
-                      }
-                    />
-                  ) : null}
-                  <Tooltip
-                    autoHide
-                    target=".pi-pencil"
-                    position="top"
-                    className="purple-tooltip"
-                  />
-                  <Tooltip autoHide target=".pi-trash" position="top" />
-                  <Tooltip autoHide target=".pi-box" position="top" />
-                </div>
-                {[PAGES.dashboard, PAGES.favorites].includes(
-                  location.pathname
-                ) ? (
-                  <div
-                    className={`flex justify-between items-center w-[5%] ${favoritesArr?.includes(
-                      id
-                    )} ? "opacity-100" : "opacity-0`}
-                  >
-                    {favId === id && favLoading ? (
-                      <Loading size="small" />
-                    ) : (
-                      <i
-                        className={`pi pi-heart text-gray-400 group-hover:opacity-100 hover:text-pink-300 transition-opacity duration-300 ${
-                          favoritesArr?.includes(id)
-                            ? `text-pink-600 opacity-50`
-                            : "opacity-0"
-                        }`}
-                        data-pr-tooltip={
-                          favoritesArr?.includes(id) ? "Unfavorite" : "Favorite"
-                        }
-                        onClick={(event) => handleFavoriteClick(event, id)}
-                      />
-                    )}
-                    <Tooltip autoHide target=".pi-heart" position="top" />
-                  </div>
-                ) : null}
+                <ActionButtons contact={contact} />
               </motion.li>
             );
           })}
         </ul>
+      )}
+    </>
+  );
+};
+
+type StatusType = keyof typeof VALID_ACTIONS; // "active" | "favorite" | "archieved" | "deleted"
+
+const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
+  const {
+    favoritesArr,
+    favId,
+    favLoading,
+    handleToggleArchieveClick,
+    handleFavoriteClick,
+    handleDeleteClick,
+  } = useContext(AppContext) as AppContextType;
+  const { id } = contact;
+
+  const status = contact.status as StatusType | null;
+
+  // const location = useLocation();
+
+  return (
+    <>
+      <div className="flex justify-evenly items-start md:items-center opacity-0 group-hover:opacity-100 w-[13%] text-gray-400 transition-opacity duration-300">
+        {/* {location.pathname !== PAGES.deleted && (
+          <i className="pi pi-pencil" data-pr-tooltip="Edit" />
+        )} */}
+        {status && VALID_ACTIONS[status]?.includes("edit") && (
+          <>
+            <i className="pi pi-pencil" data-pr-tooltip="Edit" />
+            <Tooltip
+              autoHide
+              target=".pi-pencil"
+              position="top"
+              className="purple-tooltip"
+            />
+          </>
+        )}
+        {status && VALID_ACTIONS[status]?.includes("delete") && (
+          <>
+            <i
+              className="hover:text-red-300 pi pi-trash"
+              data-pr-tooltip={
+                contact.status === "deleted" ? "Restore" : "Delete"
+              }
+              onClick={(event) => handleDeleteClick(event, contact)}
+            />
+            <Tooltip autoHide target=".pi-trash" position="top" />
+          </>
+        )}
+        {/* {location.pathname !== PAGES.deleted && ( */}
+        {status && VALID_ACTIONS[status]?.includes("archive") && (
+          <>
+            <i
+              className="pi pi-box"
+              data-pr-tooltip={
+                contact.status === "archived" ? "UnArchive" : "Archive"
+              }
+              onClick={(event) => handleToggleArchieveClick(event, contact)}
+            />
+            <Tooltip autoHide target=".pi-box" position="top" />
+          </>
+        )}
+      </div>
+
+      {/* {[PAGES.dashboard, PAGES.favorites].includes(location.pathname) && ( */}
+      {status && VALID_ACTIONS[status]?.includes("favorite") && (
+        <div className={`flex justify-between items-center w-[5%] opacity-100`}>
+          {favId === id && favLoading ? (
+            <Loading size="small" />
+          ) : (
+            <i
+              className={`pi pi-heart text-gray-400 group-hover:opacity-100 hover:text-pink-300 transition-opacity duration-300 ${
+                favoritesArr?.includes(id)
+                  ? "text-pink-600 opacity-50"
+                  : "opacity-0"
+              }`}
+              data-pr-tooltip={
+                favoritesArr?.includes(id) ? "Unfavorite" : "Favorite"
+              }
+              onClick={(event) => handleFavoriteClick(event, id)}
+            />
+          )}
+          <Tooltip autoHide target=".pi-heart" position="top" />
+        </div>
       )}
     </>
   );
