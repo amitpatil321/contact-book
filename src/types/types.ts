@@ -1,3 +1,4 @@
+import { VALID_ACTIONS } from "../constants/constants";
 import { Database } from "../types/supabase.types";
 
 export type Contact = Database["public"]["Tables"]["contacts"]["Row"];
@@ -27,3 +28,4 @@ export interface AppContextType {
 }
 
 export type ContactStatusTypes = "active" | "archived" | "deleted";
+export type ContactActionTypes = keyof typeof VALID_ACTIONS;

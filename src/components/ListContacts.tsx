@@ -10,7 +10,12 @@ import { VALID_ACTIONS } from "../constants/constants";
 import messages from "../constants/messages";
 import { AppContext } from "../context/AppContext";
 import useStore from "../store/store";
-import { AppContextType, Contact, ContactStatusTypes } from "../types/types";
+import {
+  AppContextType,
+  Contact,
+  ContactActionTypes,
+  ContactStatusTypes,
+} from "../types/types";
 import Loading from "./Loading";
 import NoData from "./NoData";
 
@@ -98,8 +103,6 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
   );
 };
 
-type StatusType = keyof typeof VALID_ACTIONS; // "active" | "favorite" | "archieved" | "deleted"
-
 const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
   const {
     favoritesArr,
@@ -111,9 +114,7 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
   } = useContext(AppContext) as AppContextType;
   const { id } = contact;
 
-  const status = contact.status as StatusType | null;
-
-  // const location = useLocation();
+  const status = contact.status as ContactActionTypes | null;
 
   return (
     <>
