@@ -1,4 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { UseMutateFunction, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import messages from "../constants/messages";
@@ -6,16 +6,22 @@ import useStore from "../store/store";
 import { Contact } from "../types/types";
 import { useToast } from "./useToast";
 
-interface toggleArchieveType {
-  onSuccess: () => void;
-  onError: () => void;
-}
+type ArchiveContactResponse = "active" | "deleted";
+
+// interface toggleArchieveType {
+//   onSuccess: () => void;
+//   onError: () => void;
+// }
+
+type ArchiveContactMutationTypeFn = UseMutateFunction<
+  ArchiveContactResponse,
+  Error,
+  Contact,
+  unknown
+>;
 
 const useHandleArchieve = (
-  toggleArchieveMutation: (
-    contact: Contact,
-    options: toggleArchieveType
-  ) => void
+  toggleArchieveMutation: ArchiveContactMutationTypeFn
 ) => {
   const { showToast } = useToast();
   const queryClientObj = useQueryClient();
@@ -24,9 +30,15 @@ const useHandleArchieve = (
   const handleArchieve = useCallback(
     (contact: Contact) => {
       toggleArchieveMutation(contact, {
-        onSuccess: () => {
+        onSuccess: (status: ArchiveContactResponse) => {
           setSelectedContact(null);
-          showToast("success", "Success", messages.contacts.archieveSuccess);
+          showToast(
+            "success",
+            "Success",
+            status === "active"
+              ? messages.contacts.unarchieveSuccess
+              : messages.contacts.archieveSuccess
+          );
           queryClientObj.invalidateQueries({ queryKey: ["fetchContacts"] });
         },
         onError: () => {

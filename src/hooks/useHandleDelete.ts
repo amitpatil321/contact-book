@@ -1,20 +1,33 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { UseMutateFunction, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import messages from "../constants/messages";
 import useStore from "../store/store";
 import { Contact } from "../types/types";
 import { useToast } from "./useToast";
 
-type DeleteContactMutationType = {
-  onSuccess?: (response: "active" | "deleted") => void;
-  onError?: (error: string) => void;
-};
+type DeleteContactResponse = "active" | "deleted";
+
+// type DeleteContactMutationType = {
+//   onSuccess?: (response: DeleteContactResponse) => void;
+//   onError?: (error: string) => void;
+// };
+
+type DeleteContactMutationTypeFn = UseMutateFunction<
+  DeleteContactResponse,
+  Error,
+  Contact,
+  unknown
+>;
+
+// const useHandleDelete = (
+//   deleteContactMutation: (
+//     contact: Contact,
+//     options: DeleteContactMutationType
+//   ) => void
+// ) => {
 
 const useHandleDelete = (
-  deleteContactMutation: (
-    contact: Contact,
-    options: DeleteContactMutationType
-  ) => void
+  deleteContactMutation: DeleteContactMutationTypeFn
 ) => {
   const { showToast } = useToast();
   const queryClientObj = useQueryClient();
@@ -23,7 +36,7 @@ const useHandleDelete = (
   const handleDelete = useCallback(
     (contact: Contact) => {
       deleteContactMutation(contact, {
-        onSuccess: (status: "active" | "deleted") => {
+        onSuccess: (status: DeleteContactResponse) => {
           console.log(status);
           setSelectedContact(null);
           showToast(
@@ -35,8 +48,7 @@ const useHandleDelete = (
           );
           queryClientObj.invalidateQueries({ queryKey: ["fetchContacts"] });
         },
-        onError: (error: string) => {
-          console.error(error);
+        onError: () => {
           showToast("error", "Error", messages.contacts.deleteError);
         },
       });

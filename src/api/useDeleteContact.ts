@@ -9,7 +9,7 @@ type DeleteContactResponse = "active" | "deleted";
 const deleteContact = async (
   contact: Contact
 ): Promise<DeleteContactResponse> => {
-  const status: "active" | "deleted" =
+  const status: DeleteContactResponse =
     contact.status === "deleted" ? "active" : "deleted";
 
   const { error } = await supabase
@@ -18,12 +18,13 @@ const deleteContact = async (
     .eq("id", contact.id)
     .single();
 
-  if (error)
+  if (error) {
     throw new Error(
-      status === "active"
-        ? messages.contacts.deleteError
-        : messages.contacts.restoreError
+      contact.status === "deleted"
+        ? messages.contacts.restoreError
+        : messages.contacts.deleteError
     );
+  }
 
   return status;
 };

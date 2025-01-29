@@ -54,16 +54,18 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     (event: React.MouseEvent<HTMLElement>, contact: Contact) => {
       event.preventDefault();
       event.stopPropagation();
-      confirmPopup({
-        target: event.currentTarget,
-        message: messages.contacts.confirmArchieve,
-        icon: "pi pi-exclamation-triangle",
-        defaultFocus: "accept",
-        accept: () => handleArchieve(contact),
-        reject: () => {
-          return null;
-        },
-      });
+      if (contact.status === "active") {
+        confirmPopup({
+          target: event.currentTarget,
+          message: messages.contacts.confirmArchieve,
+          icon: "pi pi-exclamation-triangle",
+          defaultFocus: "accept",
+          accept: () => handleArchieve(contact),
+          reject: () => {
+            return null;
+          },
+        });
+      } else handleArchieve(contact);
     },
     [handleArchieve]
   );

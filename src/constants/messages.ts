@@ -7,6 +7,8 @@ export default {
     errorSaving: "Error saving contact information",
     archieveSuccess: "Contact archived successfully!",
     archieveError: "Error archiving contact",
+    unarchieveSuccess: "Contact unarchived successfully!",
+    unarchieveError: "Error unarchiving contact",
     deleteError: "Error deleting contact, Please try again!",
     deleteSuccess: "Contact deleted successfully!",
     restoreError: "Error restoring contact, Please try again!",
