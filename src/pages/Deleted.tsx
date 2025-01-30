@@ -1,8 +1,8 @@
 import ContactListDetails from "../components/ContactListDetails.layout";
-import { ContactStatusTypes } from "../types/types";
+import { CONTACT_STATUS } from "../constants/constants";
 
-const Deleted: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
-  return <ContactListDetails type={type} />;
+const Deleted: React.FC = () => {
+  return <ContactListDetails type={CONTACT_STATUS.deleted} />;
 };
 
 export default Deleted;

@@ -12,41 +12,26 @@ import useHandleFavorites from "../hooks/useHandleFavorites";
 import { Contact } from "../types/types";
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  const { data: favData } = useFetchFavorites();
+  const { data: favorites } = useFetchFavorites();
 
   const [expanded, setExpanded] = useState<boolean>(false);
   const [showAddContact, setShowAddContact] = useState<boolean>(false);
 
-  const favoritesArr = useMemo(() => {
-    if (!favData || !favData[0]?.favorites) {
-      return [];
-    }
-
-    const splitFavorites = favData[0]?.favorites.split(",");
-    return splitFavorites.length === 1 && splitFavorites[0] === ""
-      ? []
-      : splitFavorites;
-  }, [favData]);
-
   const { mutate: toggleFavorites, isPending: favLoading } =
     useToggleFavorites();
-
-  const { handleFavorites, favId } = useHandleFavorites(
-    favoritesArr,
-    toggleFavorites
-  );
-
   const { mutate: toggleArchiveMutation, isPending: archiveLoading } =
     useToggleArchive();
   const { mutate: deleteContactMutation, isPending: deleteLoading } =
     useDeleteContact();
 
+  const { handleFavorites, favId } = useHandleFavorites(toggleFavorites);
   const { handleArchive } = useHandleArchive(toggleArchiveMutation);
   const { handleDelete } = useHandleDelete(deleteContactMutation);
 
   const handleFavoriteClick = useCallback(
-    (event: React.MouseEvent, contactId: string) =>
-      handleFavorites(event, contactId),
+    (event: React.MouseEvent, contactId: string) => {
+      handleFavorites(event, contactId);
+    },
     [handleFavorites]
   );
 
@@ -96,7 +81,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       setExpanded,
       showAddContact,
       setShowAddContact,
-      favoritesArr,
+      favorites,
       favId,
       favLoading,
       archiveLoading,
@@ -110,7 +95,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       setExpanded,
       showAddContact,
       setShowAddContact,
-      favoritesArr,
+      favorites,
       favId,
       favLoading,
       archiveLoading,

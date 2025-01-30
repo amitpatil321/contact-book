@@ -1,9 +1,9 @@
 import React from "react";
 import ContactListDetails from "../components/ContactListDetails.layout";
-import { ContactStatusTypes } from "../types/types";
+import { CONTACT_STATUS } from "../constants/constants";
 
-const Active: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
-  return <ContactListDetails type={type} />;
+const Active: React.FC = () => {
+  return <ContactListDetails type={CONTACT_STATUS.active} />;
 };
 
 export default Active;

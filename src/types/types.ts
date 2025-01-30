@@ -10,7 +10,7 @@ export interface AppContextType {
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   showAddContact: boolean;
   setShowAddContact: React.Dispatch<React.SetStateAction<boolean>>;
-  favoritesArr: string[] | null | undefined;
+  favorites: { id: string; user_id: string }[] | undefined;
   favId: string | null;
   favLoading: boolean;
   // handleFavorites: (event: React.MouseEvent, id: string) => void;
@@ -27,5 +27,10 @@ export interface AppContextType {
   ) => void;
 }
 
-export type ContactStatusTypes = "active" | "archived" | "deleted";
+export type ContactStatusTypes =
+  | "active"
+  | "favorites"
+  | "archived"
+  | "deleted";
+
 export type ContactActionTypes = keyof typeof VALID_ACTIONS;

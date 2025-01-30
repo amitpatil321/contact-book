@@ -1,9 +1,9 @@
 import React from "react";
 import ContactListDetails from "../components/ContactListDetails.layout";
-import { ContactStatusTypes } from "../types/types";
+import { CONTACT_STATUS } from "../constants/constants";
 
-const Archived: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
-  return <ContactListDetails type={type} />;
+const Archived: React.FC = () => {
+  return <ContactListDetails type={CONTACT_STATUS.archived} />;
 };
 
 export default Archived;

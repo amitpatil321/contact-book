@@ -3,6 +3,13 @@ import { Database } from "../types/supabase.types";
 type TableNames = keyof Database["public"]["Tables"];
 type RouteNames = "dashboard" | "favorites" | "archived" | "deleted";
 
+export const CONTACT_STATUS = {
+  active: "active",
+  favorites: "favorites",
+  archived: "archived",
+  deleted: "deleted",
+} as const;
+
 export const TABLES: Record<TableNames, TableNames> = {
   contacts: "contacts",
   meta: "meta",

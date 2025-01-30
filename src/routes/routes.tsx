@@ -22,10 +22,10 @@ const AppRoutes = () => {
     >
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Active type="active" />} />
+          <Route index element={<Active />} />
           <Route path={PAGES.favorites} element={<Favorites />} />
-          <Route path={PAGES.archived} element={<Archived type="archived" />} />
-          <Route path={PAGES.deleted} element={<Deleted type="deleted" />} />
+          <Route path={PAGES.archived} element={<Archived />} />
+          <Route path={PAGES.deleted} element={<Deleted />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
