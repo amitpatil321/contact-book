@@ -10,7 +10,7 @@ interface ActionButtonProps {
 
 const ActionButton: React.FC<ActionButtonProps> = ({ contact }) => {
   const {
-    favoritesArr,
+    favorites,
     favLoading,
     archiveLoading,
     deleteLoading,
@@ -42,7 +42,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ contact }) => {
               <div className="w-14">
                 <Loading />
               </div>
-            ) : favoritesArr?.includes(contact.id) ? (
+            ) : favorites?.find((each) => each.user_id === contact.id) ? (
               "Unfavorite"
             ) : (
               "Favorite"

@@ -20,10 +20,16 @@ import Loading from "./Loading";
 import NoData from "./NoData";
 
 const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
-  const { data: contacts, error, isLoading: loading } = useFetchContacts(type);
+  const { setShowAddContact, favorites } = useContext(
+    AppContext
+  ) as AppContextType;
+  const {
+    data: contacts,
+    error,
+    isLoading: loading,
+  } = useFetchContacts(type, favorites);
   const msgs = useRef<Messages | null>(null);
-  const { setSelectedContact } = useStore();
-  const { setShowAddContact } = useContext(AppContext) as AppContextType;
+  const { selected, setSelectedContact } = useStore();
 
   useEffect(() => {
     if (error && msgs.current) {
@@ -68,10 +74,12 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
             return (
               <motion.li
                 key={contact.id}
-                className="group align-top flex flex-row bg-white hover:bg-purple-100 mb-2 px-3 py-3 rounded-lg transition duration-500 cursor-pointer"
+                className={`group align-top flex flex-row bg-white hover:bg-purple-100 mb-2 px-3 py-3 rounded-lg transition duration-500 cursor-pointer ${
+                  selected?.id === contact.id && "bg-purple-100"
+                } `}
                 onClick={() => setSelectedContact(contact)}
               >
-                <div className="w-[7%]">
+                <div className="flex justify-center items-center w-[7%]">
                   <Avatar
                     image={profile_pic ?? ""}
                     label={first_name?.[0] ?? "U"}
@@ -85,7 +93,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                     className="align-bottom text-white small-pic"
                   />
                 </div>
-                <div className="flex flex-col w-[80%]">
+                <div className="flex flex-col ml-2 w-[80%]">
                   <div className="drop-shadow-sm">
                     {first_name} {last_name}
                   </div>
@@ -105,7 +113,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
 
 const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
   const {
-    favoritesArr,
+    favorites,
     favId,
     favLoading,
     handleToggleArchiveClick,
@@ -159,7 +167,6 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
           </>
         )}
       </div>
-
       {/* {[PAGES.dashboard, PAGES.favorites].includes(location.pathname) && ( */}
       {status && VALID_ACTIONS[status]?.includes("favorite") && (
         <div className={`flex justify-between items-center w-[5%] opacity-100`}>
@@ -168,12 +175,14 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
           ) : (
             <i
               className={`pi pi-heart text-gray-400 group-hover:opacity-100 hover:text-pink-300 transition-opacity duration-300 ${
-                favoritesArr?.includes(id)
+                favorites?.find((each) => each.user_id === id)
                   ? "text-pink-600 opacity-50"
                   : "opacity-0"
               }`}
               data-pr-tooltip={
-                favoritesArr?.includes(id) ? "Unfavorite" : "Favorite"
+                favorites?.find((each) => each.user_id === id)
+                  ? "Unfavorite"
+                  : "Favorite"
               }
               onClick={(event) => handleFavoriteClick(event, id)}
             />

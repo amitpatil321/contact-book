@@ -4,45 +4,46 @@ import messages from "../constants/messages";
 import supabase from "../constants/supabase";
 import { Favorites } from "../types/types";
 
-const toggleFavorites = async (favArr: string): Promise<Favorites> => {
-  // Check if the favorites record exists
-  const { data, error } = await supabase.from(TABLES.favorites).select("*");
+const toggleFavorites = async (
+  contactId: string
+): Promise<Favorites | null> => {
+  const { data: existingData, error: fetchError } = await supabase
+    .from(TABLES.favorites)
+    .select("*")
+    .eq("user_id", contactId);
 
-  if (error) {
-    throw new Error(messages.favorites.errorFetching);
-  }
+  if (fetchError) throw new Error(messages.favorites.errorFetching);
 
-  if (data.length === 0) {
-    // If no record is found, insert a new record
-    const { data: insertedData, error: insertError } = await supabase
+  if (existingData?.length) {
+    const { error: deleteError } = await supabase
       .from(TABLES.favorites)
-      .insert([{ favorites: favArr }])
+      .delete()
+      .eq("user_id", contactId);
+
+    if (deleteError) throw new Error(messages.favorites.errorRemoving);
+
+    return null;
+  } else {
+    const { data, error: insertError } = await supabase
+      .from(TABLES.favorites)
+      .insert({ user_id: contactId })
       .single();
 
     if (insertError) {
       throw new Error(messages.favorites.errorInserting);
     }
 
-    return insertedData as Favorites;
+    return data as Favorites;
   }
-
-  // If record is found, update it
-  const { data: updatedData, error: updateError } = await supabase
-    .from(TABLES.favorites)
-    .update({ favorites: favArr })
-    .eq("id", data?.[0]?.id)
-    .single();
-
-  if (updateError) {
-    throw new Error(messages.favorites.errorUpdating);
-  }
-
-  return updatedData as Favorites;
 };
 
-const useToggleFavorites = (): UseMutationResult<Favorites, Error, string> => {
-  return useMutation<Favorites, Error, string>({
-    mutationFn: async (favIds) => await toggleFavorites(favIds),
+const useToggleFavorites = (): UseMutationResult<
+  Favorites | null,
+  Error,
+  string
+> => {
+  return useMutation<Favorites | null, Error, string>({
+    mutationFn: async (contactId) => await toggleFavorites(contactId),
   });
 };
 

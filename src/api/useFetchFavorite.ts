@@ -6,6 +6,7 @@ import { Favorites } from "../types/types";
 
 const fetchFavorites = async (): Promise<Favorites[]> => {
   const { data, error } = await supabase.from(TABLES.favorites).select("*");
+
   if (error) {
     throw new Error(messages.favorites.errorFetching);
   }

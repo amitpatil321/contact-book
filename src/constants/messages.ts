@@ -19,8 +19,10 @@ export default {
     noFavorites: "No conatcts to favorited",
   },
   favorites: {
-    saveSuccess: "Favorites saved successfully!",
+    addSuccess: "Contact added to favorites successfully!",
+    removeSuccess: "Contact added to favorites successfully!",
     errorSaving: "Error saving favorites",
+    errorRemoving: "Error removing contact from favorites",
     errorFetching: "Error fetching favorites",
     errorInserting: "Failed to insert new favorites, Please try again!",
     errorUpdating: "Failed to update favorites, Please try again!",

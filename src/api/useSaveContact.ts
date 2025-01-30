@@ -51,7 +51,6 @@ const saveContact = async (
     metaData = metaResult as Meta[];
   }
 
-  // Return both results
   return { contacts: basicInfo as Contact[], meta: metaData };
 };
 

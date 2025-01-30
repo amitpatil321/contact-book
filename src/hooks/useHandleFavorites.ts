@@ -10,10 +10,9 @@ type ToggleFavoritesOptions = {
 };
 
 const useHandleFavorites = (
-  favoritesArr: string[] | null | undefined,
   toggleFavorites: (favorites: string, options: ToggleFavoritesOptions) => void
 ) => {
-  const [favId, setFavId] = useState<string | null>(null);
+  const [favId, setFavId] = useState<string>("");
   const queryClientObj = useQueryClient();
   const { showToast } = useToast();
 
@@ -21,26 +20,21 @@ const useHandleFavorites = (
     (event: React.MouseEvent, id: string) => {
       setFavId(id);
 
-      // if id exists then remove, otherwise add
-      const filtered = favoritesArr?.includes(id)
-        ? favoritesArr?.filter((each) => each !== id)
-        : [...(favoritesArr || []), id];
-
-      toggleFavorites(filtered.join(","), {
+      toggleFavorites(id, {
         onSuccess: () => {
-          showToast("success", "Success", messages.favorites.saveSuccess);
+          showToast("success", "Success", messages.favorites.addSuccess);
           queryClientObj.invalidateQueries({ queryKey: ["fetchFavorites"] });
         },
         onError: () => {
           showToast("error", "Error", messages.favorites.errorSaving);
         },
-        onSettled: () => setFavId(null),
+        onSettled: () => setFavId(""),
       });
 
       event.stopPropagation();
       event.preventDefault();
     },
-    [favoritesArr, toggleFavorites, showToast, queryClientObj]
+    [toggleFavorites, showToast, queryClientObj]
   );
 
   return { handleFavorites, favId };
