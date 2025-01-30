@@ -14,14 +14,14 @@ export interface AppContextType {
   favId: string | null;
   favLoading: boolean;
   // handleFavorites: (event: React.MouseEvent, id: string) => void;
-  archieveLoading: boolean;
+  archiveLoading: boolean;
   deleteLoading: boolean;
   handleFavoriteClick: (event: React.MouseEvent, contactId: string) => void;
   handleDeleteClick: (
     event: React.MouseEvent<HTMLElement>,
     contact: Contact
   ) => void;
-  handleToggleArchieveClick: (
+  handleToggleArchiveClick: (
     event: React.MouseEvent<HTMLElement>,
     contact: Contact
   ) => void;

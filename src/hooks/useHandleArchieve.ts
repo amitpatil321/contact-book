@@ -6,9 +6,9 @@ import useStore from "../store/store";
 import { Contact } from "../types/types";
 import { useToast } from "./useToast";
 
-type ArchiveContactResponse = "active" | "deleted";
+type ArchiveContactResponse = "active" | "archived";
 
-// interface toggleArchieveType {
+// interface toggleArchiveType {
 //   onSuccess: () => void;
 //   onError: () => void;
 // }
@@ -20,36 +20,36 @@ type ArchiveContactMutationTypeFn = UseMutateFunction<
   unknown
 >;
 
-const useHandleArchieve = (
-  toggleArchieveMutation: ArchiveContactMutationTypeFn
+const useHandleArchive = (
+  toggleArchiveMutation: ArchiveContactMutationTypeFn
 ) => {
   const { showToast } = useToast();
   const queryClientObj = useQueryClient();
   const { setSelectedContact } = useStore();
 
-  const handleArchieve = useCallback(
+  const handleArchive = useCallback(
     (contact: Contact) => {
-      toggleArchieveMutation(contact, {
+      toggleArchiveMutation(contact, {
         onSuccess: (status: ArchiveContactResponse) => {
           setSelectedContact(null);
           showToast(
             "success",
             "Success",
             status === "active"
-              ? messages.contacts.unarchieveSuccess
-              : messages.contacts.archieveSuccess
+              ? messages.contacts.unarchiveSuccess
+              : messages.contacts.archiveSuccess
           );
           queryClientObj.invalidateQueries({ queryKey: ["fetchContacts"] });
         },
         onError: () => {
-          showToast("error", "Error", messages.contacts.archieveError);
+          showToast("error", "Error", messages.contacts.archiveError);
         },
       });
     },
-    [toggleArchieveMutation, setSelectedContact, showToast, queryClientObj]
+    [toggleArchiveMutation, setSelectedContact, showToast, queryClientObj]
   );
 
-  return { handleArchieve };
+  return { handleArchive };
 };
 
-export default useHandleArchieve;
+export default useHandleArchive;

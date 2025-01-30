@@ -79,10 +79,10 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                     shape="circle"
                     style={{
                       width: "48px",
-                      height: "48px",
+                      height: "36px",
                       objectFit: "cover",
                     }}
-                    className="align-bottom bg-purple-500 text-white"
+                    className="align-bottom text-white small-pic"
                   />
                 </div>
                 <div className="flex flex-col w-[80%]">
@@ -108,7 +108,7 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
     favoritesArr,
     favId,
     favLoading,
-    handleToggleArchieveClick,
+    handleToggleArchiveClick,
     handleFavoriteClick,
     handleDeleteClick,
   } = useContext(AppContext) as AppContextType;
@@ -153,7 +153,7 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
               data-pr-tooltip={
                 contact.status === "archived" ? "UnArchive" : "Archive"
               }
-              onClick={(event) => handleToggleArchieveClick(event, contact)}
+              onClick={(event) => handleToggleArchiveClick(event, contact)}
             />
             <Tooltip autoHide target=".pi-box" position="top" />
           </>

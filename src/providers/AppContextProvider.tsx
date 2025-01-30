@@ -2,11 +2,11 @@ import { confirmPopup } from "primereact/confirmpopup";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import useDeleteContact from "../api/useDeleteContact";
 import useFetchFavorites from "../api/useFetchFavorite";
-import useToggleArchieve from "../api/useToggleArchieve";
+import useToggleArchive from "../api/useToggleArchieve";
 import useToggleFavorites from "../api/useToggleFavorite";
 import messages from "../constants/messages";
 import { AppContext } from "../context/AppContext";
-import useHandleArchieve from "../hooks/useHandleArchieve";
+import useHandleArchive from "../hooks/useHandleArchieve";
 import useHandleDelete from "../hooks/useHandleDelete";
 import useHandleFavorites from "../hooks/useHandleFavorites";
 import { Contact } from "../types/types";
@@ -36,12 +36,12 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     toggleFavorites
   );
 
-  const { mutate: toggleArchieveMutation, isPending: archieveLoading } =
-    useToggleArchieve();
+  const { mutate: toggleArchiveMutation, isPending: archiveLoading } =
+    useToggleArchive();
   const { mutate: deleteContactMutation, isPending: deleteLoading } =
     useDeleteContact();
 
-  const { handleArchieve } = useHandleArchieve(toggleArchieveMutation);
+  const { handleArchive } = useHandleArchive(toggleArchiveMutation);
   const { handleDelete } = useHandleDelete(deleteContactMutation);
 
   const handleFavoriteClick = useCallback(
@@ -50,24 +50,24 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     [handleFavorites]
   );
 
-  const handleToggleArchieveClick = useCallback(
+  const handleToggleArchiveClick = useCallback(
     (event: React.MouseEvent<HTMLElement>, contact: Contact) => {
       event.preventDefault();
       event.stopPropagation();
       if (contact.status === "active") {
         confirmPopup({
           target: event.currentTarget,
-          message: messages.contacts.confirmArchieve,
+          message: messages.contacts.confirmArchive,
           icon: "pi pi-exclamation-triangle",
           defaultFocus: "accept",
-          accept: () => handleArchieve(contact),
+          accept: () => handleArchive(contact),
           reject: () => {
             return null;
           },
         });
-      } else handleArchieve(contact);
+      } else handleArchive(contact);
     },
-    [handleArchieve]
+    [handleArchive]
   );
 
   const handleDeleteClick = useCallback(
@@ -99,10 +99,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       favoritesArr,
       favId,
       favLoading,
-      archieveLoading,
+      archiveLoading,
       deleteLoading,
       handleFavoriteClick,
-      handleToggleArchieveClick,
+      handleToggleArchiveClick,
       handleDeleteClick,
     }),
     [
@@ -113,10 +113,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       favoritesArr,
       favId,
       favLoading,
-      archieveLoading,
+      archiveLoading,
       deleteLoading,
       handleFavoriteClick,
-      handleToggleArchieveClick,
+      handleToggleArchiveClick,
       handleDeleteClick,
     ]
   );

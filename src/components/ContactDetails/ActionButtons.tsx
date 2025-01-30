@@ -12,10 +12,10 @@ const ActionButton: React.FC<ActionButtonProps> = ({ contact }) => {
   const {
     favoritesArr,
     favLoading,
-    archieveLoading,
+    archiveLoading,
     deleteLoading,
     handleFavoriteClick,
-    handleToggleArchieveClick,
+    handleToggleArchiveClick,
     handleDeleteClick,
   } = useContext(AppContext) as AppContextType;
 
@@ -56,11 +56,11 @@ const ActionButton: React.FC<ActionButtonProps> = ({ contact }) => {
         <>
           <span
             className={`hover:text-purple-500 cursor-pointer ${
-              archieveLoading ? "opacity-50 pointer-events-none" : ""
+              archiveLoading ? "opacity-50 pointer-events-none" : ""
             }`}
-            onClick={(event) => handleToggleArchieveClick(event, contact)}
+            onClick={(event) => handleToggleArchiveClick(event, contact)}
           >
-            {archieveLoading ? (
+            {archiveLoading ? (
               <div className="w-12">
                 <Loading size="small" />
               </div>

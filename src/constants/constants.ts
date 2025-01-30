@@ -20,7 +20,7 @@ export const PAGES: Record<RouteNames, string> = {
 // export const VALID_ACTIONS = {
 //   edit: ["active"],
 //   delete: ["active"],
-//   archieve: ["active"],
+//   archive: ["active"],
 //   favorite: ["active"],
 // };
 

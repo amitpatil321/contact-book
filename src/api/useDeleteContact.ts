@@ -9,8 +9,7 @@ type DeleteContactResponse = "active" | "deleted";
 const deleteContact = async (
   contact: Contact
 ): Promise<DeleteContactResponse> => {
-  const status: DeleteContactResponse =
-    contact.status === "deleted" ? "active" : "deleted";
+  const status = contact.status === "deleted" ? "active" : "deleted";
 
   const { error } = await supabase
     .from(TABLES.contacts)

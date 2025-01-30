@@ -4,11 +4,11 @@ import messages from "../constants/messages";
 import supabase from "../constants/supabase";
 import { Contact } from "../types/types";
 
-type ArchieveContactResponse = "active" | "archived";
+type ArchiveContactResponse = "active" | "archived";
 
-const archieveContact = async (
+const archiveContact = async (
   contact: Contact
-): Promise<ArchieveContactResponse> => {
+): Promise<ArchiveContactResponse> => {
   const status = contact.status === "active" ? "archived" : "active";
   const { error } = await supabase
     .from(TABLES.contacts)
@@ -19,21 +19,21 @@ const archieveContact = async (
   if (error)
     throw new Error(
       contact.status !== "archived"
-        ? messages.contacts.unarchieveError
-        : messages.contacts.archieveError
+        ? messages.contacts.unarchiveError
+        : messages.contacts.archiveError
     );
 
   return status;
 };
 
-const useToggleArchieve = (): UseMutationResult<
-  ArchieveContactResponse,
+const useToggleArchive = (): UseMutationResult<
+  ArchiveContactResponse,
   Error,
   Contact
 > => {
-  return useMutation<ArchieveContactResponse, Error, Contact>({
-    mutationFn: async (contact) => await archieveContact(contact),
+  return useMutation<ArchiveContactResponse, Error, Contact>({
+    mutationFn: async (contact) => await archiveContact(contact),
   });
 };
 
-export default useToggleArchieve;
+export default useToggleArchive;
