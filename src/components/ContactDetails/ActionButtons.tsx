@@ -42,7 +42,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ contact }) => {
               <div className="w-14">
                 <Loading />
               </div>
-            ) : favorites?.find((each) => each.user_id === contact.id) ? (
+            ) : favorites?.find((each) => each.contact_id === contact.id) ? (
               "Unfavorite"
             ) : (
               "Favorite"

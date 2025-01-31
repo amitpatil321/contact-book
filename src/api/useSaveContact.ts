@@ -41,7 +41,7 @@ const saveContact = async (
   if (basicInfo) {
     const { data: metaResult, error: metaError } = await supabase
       .from(TABLES.meta)
-      .insert({ user_id: contact.id, ...rest })
+      .insert({ contact_id: contact.id, ...rest })
       .select();
 
     if (metaError) {

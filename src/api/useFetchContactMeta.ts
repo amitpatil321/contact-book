@@ -8,7 +8,7 @@ const fetchUserMeta = async (contactId: string): Promise<Meta[]> => {
   const { data, error } = await supabase
     .from(TABLES.meta)
     .select("*")
-    .eq("user_id", contactId);
+    .eq("contact_id", contactId);
 
   if (error) throw new Error(error.message);
 

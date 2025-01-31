@@ -5,8 +5,9 @@ import { Tooltip } from "primereact/tooltip";
 import { useContext, useEffect, useRef } from "react";
 
 import { Button } from "primereact/button";
+import { DeferredContent } from "primereact/deferredcontent";
 import useFetchContacts from "../api/useFetchContacts";
-import { VALID_ACTIONS } from "../constants/constants";
+import { CONTACT_STATUS, VALID_ACTIONS } from "../constants/constants";
 import messages from "../constants/messages";
 import { AppContext } from "../context/AppContext";
 import useStore from "../store/store";
@@ -20,16 +21,17 @@ import Loading from "./Loading";
 import NoData from "./NoData";
 
 const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
-  const { setShowAddContact, favorites } = useContext(
-    AppContext
-  ) as AppContextType;
+  const { selected, contacts, setSelectedContact, setContacts } = useStore();
+
+  const { setShowAddContact } = useContext(AppContext) as AppContextType;
+
   const {
-    data: contacts,
+    data: fetchedContacts,
     error,
     isLoading: loading,
-  } = useFetchContacts(type, favorites);
+  } = useFetchContacts(type);
+
   const msgs = useRef<Messages | null>(null);
-  const { selected, setSelectedContact } = useStore();
 
   useEffect(() => {
     if (error && msgs.current) {
@@ -43,6 +45,11 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
       });
     }
   }, [error]);
+
+  useEffect(() => {
+    if (fetchedContacts && type !== CONTACT_STATUS.favorites)
+      setContacts(fetchedContacts);
+  }, [fetchedContacts, setContacts, type]);
 
   if (!loading && !contacts?.length && !error)
     return (
@@ -80,18 +87,20 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
                 onClick={() => setSelectedContact(contact)}
               >
                 <div className="flex justify-center items-center w-[7%]">
-                  <Avatar
-                    image={profile_pic ?? ""}
-                    label={first_name?.[0] ?? "U"}
-                    size="large"
-                    shape="circle"
-                    style={{
-                      width: "48px",
-                      height: "36px",
-                      objectFit: "cover",
-                    }}
-                    className="align-bottom text-white small-pic"
-                  />
+                  <DeferredContent>
+                    <Avatar
+                      image={profile_pic ?? ""}
+                      label={first_name?.[0] ?? "U"}
+                      size="large"
+                      shape="circle"
+                      style={{
+                        width: "48px",
+                        height: "36px",
+                        objectFit: "cover",
+                      }}
+                      className="align-bottom text-white small-pic"
+                    />
+                  </DeferredContent>
                 </div>
                 <div className="flex flex-col ml-2 w-[80%]">
                   <div className="drop-shadow-sm">
@@ -113,13 +122,13 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
 
 const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
   const {
-    favorites,
     favId,
     favLoading,
     handleToggleArchiveClick,
     handleFavoriteClick,
     handleDeleteClick,
   } = useContext(AppContext) as AppContextType;
+  const { favorites } = useStore();
   const { id } = contact;
 
   const status = contact.status as ContactActionTypes | null;
@@ -175,12 +184,12 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
           ) : (
             <i
               className={`pi pi-heart text-gray-400 group-hover:opacity-100 hover:text-pink-300 transition-opacity duration-300 ${
-                favorites?.find((each) => each.user_id === id)
+                favorites?.find((each) => each.contact_id === id)
                   ? "text-pink-600 opacity-50"
                   : "opacity-0"
               }`}
               data-pr-tooltip={
-                favorites?.find((each) => each.user_id === id)
+                favorites?.find((each) => each.contact_id === id)
                   ? "Unfavorite"
                   : "Favorite"
               }

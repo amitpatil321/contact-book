@@ -2,47 +2,52 @@ import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { TABLES } from "../constants/constants";
 import messages from "../constants/messages";
 import supabase from "../constants/supabase";
-import { Favorites } from "../types/types";
 
-const toggleFavorites = async (
-  contactId: string
-): Promise<Favorites | null> => {
+type ResponseType = {
+  recordId: string;
+  action: string;
+};
+
+const toggleFavorites = async (contactId: string): Promise<ResponseType> => {
   const { data: existingData, error: fetchError } = await supabase
     .from(TABLES.favorites)
     .select("*")
-    .eq("user_id", contactId);
+    .eq("contact_id", contactId);
 
   if (fetchError) throw new Error(messages.favorites.errorFetching);
 
   if (existingData?.length) {
-    const { error: deleteError } = await supabase
+    const { data, error: deleteError } = await supabase
       .from(TABLES.favorites)
       .delete()
-      .eq("user_id", contactId);
+      .eq("contact_id", contactId)
+      .select("id")
+      .single();
 
     if (deleteError) throw new Error(messages.favorites.errorRemoving);
 
-    return null;
+    return { recordId: data?.id.toString(), action: "unfavorited" };
   } else {
     const { data, error: insertError } = await supabase
       .from(TABLES.favorites)
-      .insert({ user_id: contactId })
+      .insert({ contact_id: contactId })
+      .select("id")
       .single();
 
     if (insertError) {
       throw new Error(messages.favorites.errorInserting);
     }
 
-    return data as Favorites;
+    return { recordId: data?.id.toString(), action: "favorited" };
   }
 };
 
 const useToggleFavorites = (): UseMutationResult<
-  Favorites | null,
+  ResponseType,
   Error,
   string
 > => {
-  return useMutation<Favorites | null, Error, string>({
+  return useMutation<ResponseType, Error, string>({
     mutationFn: async (contactId) => await toggleFavorites(contactId),
   });
 };
