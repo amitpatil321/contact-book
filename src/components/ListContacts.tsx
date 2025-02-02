@@ -73,7 +73,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
     <>
       <Messages ref={msgs} />
       {loading ? (
-        <Loading />
+        <Loading size={"medium"} />
       ) : (
         <ul>
           {contacts?.map((contact) => {
@@ -136,15 +136,16 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
   return (
     <>
       <div className="flex justify-evenly items-start md:items-center opacity-0 group-hover:opacity-100 w-[13%] text-gray-400 transition-opacity duration-300">
-        {/* {location.pathname !== PAGES.deleted && (
-          <i className="pi pi-pencil" data-pr-tooltip="Edit" />
-        )} */}
         {status && VALID_ACTIONS[status]?.includes("edit") && (
           <>
-            <i className="pi pi-pencil" data-pr-tooltip="Edit" />
+            <i
+              className="pi pi-pencil"
+              data-pr-tooltip="Edit"
+              id={`edit-${contact.id}`}
+            />
             <Tooltip
               autoHide
-              target=".pi-pencil"
+              target={`#edit-${contact.id}`}
               position="top"
               className="purple-tooltip"
             />
@@ -157,12 +158,12 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
               data-pr-tooltip={
                 contact.status === "deleted" ? "Restore" : "Delete"
               }
+              id={`delete-${contact.id}`}
               onClick={(event) => handleDeleteClick(event, contact)}
             />
-            <Tooltip autoHide target=".pi-trash" position="top" />
+            <Tooltip autoHide target={`#delete-${contact.id}`} position="top" />
           </>
         )}
-        {/* {location.pathname !== PAGES.deleted && ( */}
         {status && VALID_ACTIONS[status]?.includes("archive") && (
           <>
             <i
@@ -170,15 +171,20 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
               data-pr-tooltip={
                 contact.status === "archived" ? "UnArchive" : "Archive"
               }
+              id={`archive-${contact.id}`}
               onClick={(event) => handleToggleArchiveClick(event, contact)}
             />
-            <Tooltip autoHide target=".pi-box" position="top" />
+            <Tooltip
+              autoHide
+              target={`#archive-${contact.id}`}
+              position="top"
+            />
           </>
         )}
       </div>
-      {/* {[PAGES.dashboard, PAGES.favorites].includes(location.pathname) && ( */}
+
       {status && VALID_ACTIONS[status]?.includes("favorite") && (
-        <div className={`flex justify-between items-center w-[5%] opacity-100`}>
+        <div className="flex justify-between items-center opacity-100 w-[5%]">
           {favId === id && favLoading ? (
             <Loading size="small" />
           ) : (
@@ -193,10 +199,11 @@ const ActionButtons: React.FC<{ contact: Contact }> = ({ contact }) => {
                   ? "Unfavorite"
                   : "Favorite"
               }
+              id={`favorite-${contact.id}`}
               onClick={(event) => handleFavoriteClick(event, id)}
             />
           )}
-          <Tooltip autoHide target=".pi-heart" position="top" />
+          <Tooltip autoHide target={`#favorite-${contact.id}`} position="top" />
         </div>
       )}
     </>

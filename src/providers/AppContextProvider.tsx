@@ -1,5 +1,5 @@
 import { confirmPopup } from "primereact/confirmpopup";
-import { ReactNode, useCallback, useMemo, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import useDeleteContact from "../api/useDeleteContact";
 import useFetchFavorites from "../api/useFetchFavorite";
 import useToggleArchive from "../api/useToggleArchieve";
@@ -9,6 +9,7 @@ import { AppContext } from "../context/AppContext";
 import useHandleArchive from "../hooks/useHandleArchieve";
 import useHandleDelete from "../hooks/useHandleDelete";
 import useHandleFavorites from "../hooks/useHandleFavorites";
+import useStore from "../store/store";
 import { Contact } from "../types/types";
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
@@ -16,6 +17,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const [expanded, setExpanded] = useState<boolean>(false);
   const [showAddContact, setShowAddContact] = useState<boolean>(false);
+  const { setFavorites } = useStore();
 
   const { mutate: toggleFavorites, isPending: favLoading } =
     useToggleFavorites();
@@ -34,6 +36,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     },
     [handleFavorites]
   );
+
+  useEffect(() => {
+    if (favorites) setFavorites(favorites);
+  }, [favorites, setFavorites]);
 
   const handleToggleArchiveClick = useCallback(
     (event: React.MouseEvent<HTMLElement>, contact: Contact) => {
