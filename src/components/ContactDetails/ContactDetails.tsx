@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { Avatar } from "primereact/avatar";
 import useFetchContactMeta from "../../api/useFetchContactMeta";
 import messages from "../../constants/messages";
-import useStore from "../../store/store";
+import { useSelectedContact } from "../../store/store";
 import NoData from "../NoData";
 import CompanyDesignation from "../Skeletons/CompanyDesignation.skeleton";
 import ContactDetailsTabs from "../Skeletons/ContactDetailsTabs.skeleton";
@@ -14,7 +14,7 @@ import MetaInfo from "./MetaInfo";
 import SocialLinks from "./SocialLinks";
 
 const ContactDetails = () => {
-  const { selected: contact } = useStore();
+  const contact = useSelectedContact();
   const msgs = useRef<Messages | null>(null);
   const contactId = contact?.id ? contact.id : undefined;
   const {
