@@ -15,7 +15,6 @@ import { Contact } from "../types/types";
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const { data: favorites } = useFetchFavorites();
 
-  const [expanded, setExpanded] = useState<boolean>(false);
   const [showAddContact, setShowAddContact] = useState<boolean>(false);
   const { setFavorites } = useStore();
 
@@ -83,8 +82,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const contextValue = useMemo(
     () => ({
-      expanded,
-      setExpanded,
       showAddContact,
       setShowAddContact,
       favorites,
@@ -97,8 +94,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       handleDeleteClick,
     }),
     [
-      expanded,
-      setExpanded,
       showAddContact,
       setShowAddContact,
       favorites,

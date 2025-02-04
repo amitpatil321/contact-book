@@ -2,21 +2,22 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useContext, useRef } from "react";
 import { AppContext } from "../context/AppContext";
+import useStore from "../store/store";
 import { AppContextType } from "../types/types";
 
 const Header: React.FC = () => {
-  const { expanded, setExpanded, setShowAddContact } = useContext(
-    AppContext
-  ) as AppContextType;
+  const { setShowAddContact } = useContext(AppContext) as AppContextType;
+  const { setSidebarState } = useStore();
+  const sidebarExpanded = useStore((state) => state.sidebarExpanded);
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="flex items-center bg-white p-4 rounded-lg w-full h-16">
-      <div className="w-[60%] p-inputgroup">
+      <div className="p-inputgroup w-[60%]">
         <Button
           icon="pi pi-bars"
           text
-          onClick={() => setExpanded(!expanded)}
+          onClick={() => setSidebarState(!sidebarExpanded)}
           aria-label="Open navigation menu"
           className="border-transparent focus:border-transparent focus:ring-0 !outline-none"
         />

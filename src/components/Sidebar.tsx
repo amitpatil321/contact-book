@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Link, useLocation } from "react-router";
 import { v4 as uuid } from "uuid";
 import { AppContext } from "../context/AppContext";
+import useStore from "../store/store";
 import { AppContextType } from "../types/types";
 
 interface MenuType {
@@ -45,7 +46,7 @@ const menus: MenuType[] = [
 ];
 
 const Sidebar: React.FC = () => {
-  const { expanded } = useContext(AppContext) as AppContextType;
+  const sidebarExpanded = useStore((state) => state.sidebarExpanded);
 
   return (
     <aside className="lg:block hidden h-screen">
@@ -55,13 +56,13 @@ const Sidebar: React.FC = () => {
             <img
               src="/logo.svg"
               alt="Logo"
-              className={`transition-all ${expanded ? "w-32" : "w-0"}`}
+              className={`transition-all ${sidebarExpanded ? "w-32" : "w-0"}`}
             />
           </a>
         </div>
         <ul className={`flex-1 px-3 mt-5`}>
           {menus.map((menu) => (
-            <SidebarItem key={uuid()} item={menu} expanded={expanded} />
+            <SidebarItem key={uuid()} item={menu} expanded={sidebarExpanded} />
           ))}
         </ul>
       </nav>
