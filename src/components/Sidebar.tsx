@@ -51,14 +51,29 @@ const Sidebar: React.FC = () => {
   return (
     <aside className="lg:block hidden h-screen">
       <nav className={`flex flex-col bg-white shadow-sm border-r h-full`}>
-        <div className="flex justify-between items-center p-4 pb-2">
-          <a href="index.html">
-            <img
-              src="/logo.svg"
-              alt="Logo"
-              className={`transition-all ${sidebarExpanded ? "w-32" : "w-0"}`}
-            />
-          </a>
+        <div className="flex justify-between items-center p-4 pb-2 h-12">
+          <Link
+            to="/"
+            aria-label="go to home page"
+            className="flex items-center gap-2"
+          >
+            <div
+              className={`w-full flex flex-row gap-3 transition-all ${
+                sidebarExpanded ? "w-32" : "w-0"
+              }`}
+            >
+              <img
+                src="./contact-book-icon.png"
+                width="30"
+                height="30"
+                className="h-auto"
+                alt="logo"
+              />
+              <h5 className={`mt-1 ${sidebarExpanded ? "block" : "hidden"}`}>
+                Contact Book
+              </h5>
+            </div>
+          </Link>
         </div>
         <ul className={`flex-1 px-3 mt-5`}>
           {menus.map((menu) => (

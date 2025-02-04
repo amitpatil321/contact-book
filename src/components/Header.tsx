@@ -1,13 +1,11 @@
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { useContext, useRef } from "react";
-import { AppContext } from "../context/AppContext";
+import { useRef } from "react";
 import useStore from "../store/store";
-import { AppContextType } from "../types/types";
 
 const Header: React.FC = () => {
-  const { setShowAddContact } = useContext(AppContext) as AppContextType;
-  const { setSidebarState } = useStore();
+  // const { setShowAddContact } = useContext(AppContext) as AppContextType;
+  const { setShowAddContact, setSidebarState } = useStore();
   const sidebarExpanded = useStore((state) => state.sidebarExpanded);
   const inputRef = useRef<HTMLInputElement>(null);
 

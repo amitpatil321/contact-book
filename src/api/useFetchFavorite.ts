@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { TABLES } from "../constants/constants";
 import messages from "../constants/messages";
 import supabase from "../constants/supabase";
-import { Favorites } from "../types/types";
+import useStore from "../store/store";
+import { Contact, Favorites } from "../types/types";
 
 const fetchFavorites = async (): Promise<Favorites[]> => {
   const { data, error } = await supabase.from(TABLES.favorites).select("*");
@@ -15,9 +16,18 @@ const fetchFavorites = async (): Promise<Favorites[]> => {
 };
 
 const useFetchFavorites = () => {
-  return useQuery<Favorites[]>({
+  const { contacts } = useStore();
+
+  return useQuery<Favorites[], Error, Contact[]>({
     queryKey: ["fetchFavorites"],
     queryFn: fetchFavorites,
+    select: (favorites: Favorites[]): Contact[] => {
+      return (
+        contacts?.filter((contact: Contact) =>
+          favorites.some((fav) => fav.contact_id === contact.id)
+        ) ?? []
+      );
+    },
   });
 };
 

@@ -16,7 +16,7 @@ const ContactCard: React.FC<{ contact: Contact; selected: boolean }> = ({
   return (
     <motion.li
       key={contact.id}
-      className={`group align-top flex flex-row  hover:bg-purple-100 mb-2 px-3 py-3 rounded-lg transition duration-500 cursor-pointer ${
+      className={`group align-top mx-4 flex flex-row  hover:bg-purple-100 mb-2 px-1 py-3 rounded-lg transition duration-500 cursor-pointer ${
         selected ? `bg-purple-100` : ``
       }`}
       onClick={() => setSelectedContact(contact)}

@@ -1,10 +1,12 @@
 import React, { Suspense, useContext } from "react";
 
 import Loading from "../components/Loading";
+import { CONTACT_STATUS } from "../constants/constants";
 import { AppContext } from "../context/AppContext";
 import { AppContextType, ContactStatusTypes } from "../types/types";
+import ListFavorites from "./ListFavorites/ListFavorites";
 
-const ListContacts = React.lazy(() => import("../components/ListContacts"));
+const ListContacts = React.lazy(() => import("./ListContacts/ListContacts"));
 const ContactDetails = React.lazy(
   () => import("../components/ContactDetails/ContactDetails")
 );
@@ -18,9 +20,13 @@ const ContactListDetails: React.FC<{ type: ContactStatusTypes }> = ({
   const { showAddContact } = useContext(AppContext) as AppContextType;
   return (
     <div className="flex gap-4 w-full">
-      <div className="bg-white p-4 pt-3 rounded-lg w-[100%] md:w-[50%] h-[calc(100vh-110px)] overflow-y-auto">
-        <Suspense fallback={<Loading size="small" />}>
-          <ListContacts type={type} />
+      <div className="bg-white pt-4 rounded-lg w-[100%] md:w-[50%] h-[calc(100vh-110px)]">
+        <Suspense fallback={<Loading size="medium" className="mt-4" />}>
+          {type === CONTACT_STATUS.favorites ? (
+            <ListFavorites />
+          ) : (
+            <ListContacts type={type} />
+          )}
         </Suspense>
       </div>
       <div className="md:block hidden bg-white p-4 rounded-lg w-[50%] h-[calc(100vh-110px)]">
