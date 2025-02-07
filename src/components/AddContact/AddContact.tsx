@@ -3,19 +3,18 @@ import { motion } from "framer-motion";
 import { Button } from "primereact/button";
 import { Inplace, InplaceContent, InplaceDisplay } from "primereact/inplace";
 import { TabPanel, TabView } from "primereact/tabview";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { v4 as uuid } from "uuid";
 import { z } from "zod";
 
 import { useQueryClient } from "@tanstack/react-query";
 import useSaveContact from "../../api/useSaveContact";
+import { CONTACT_STATUS } from "../../constants/constants";
 import messages from "../../constants/messages";
-import { AppContext } from "../../context/AppContext";
 import { formSchema } from "../../helpers/AddContactZodSchema";
 import { useToast } from "../../hooks/useToast";
 import useStore from "../../store/store";
-import { AppContextType } from "../../types/types";
 import BasicForm from "./BasicInfo";
 import HomeAddress from "./HomeAddress";
 import PersonalInfo from "./PersonalInfo";
@@ -26,8 +25,7 @@ type FormDataType = z.infer<typeof formSchema>;
 const AddContact: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
-  const { setShowAddContact } = useContext(AppContext) as AppContextType;
-  const { setSelectedContact } = useStore();
+  const { setSelectedContact, setShowAddContact } = useStore();
 
   const { showToast } = useToast();
   const { mutate } = useSaveContact();
@@ -52,7 +50,7 @@ const AddContact: React.FC = () => {
       id: uuid(),
       created_at:
         new Date().toISOString().slice(0, 19).replace("T", " ") + "+00",
-      status: "active",
+      status: CONTACT_STATUS.active,
     };
     mutate(contactForm, {
       onSuccess: (response) => {

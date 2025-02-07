@@ -1,10 +1,8 @@
 import { Tooltip } from "primereact/tooltip";
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router";
 import { v4 as uuid } from "uuid";
-import { AppContext } from "../context/AppContext";
 import useStore from "../store/store";
-import { AppContextType } from "../types/types";
 
 interface MenuType {
   icon: string;
@@ -92,7 +90,8 @@ interface SidebarItemProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ item, expanded }) => {
   const { icon, label, link } = item;
-  const { setShowAddContact } = useContext(AppContext) as AppContextType;
+  const { setShowAddContact } = useStore();
+
   const location = useLocation();
 
   return (

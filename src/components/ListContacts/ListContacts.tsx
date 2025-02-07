@@ -1,13 +1,12 @@
 import { Messages } from "primereact/messages";
 import { VirtualScroller } from "primereact/virtualscroller";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { Button } from "primereact/button";
 import useFetchContacts from "../../api/useFetchContacts";
 import messages from "../../constants/messages";
-import { AppContext } from "../../context/AppContext";
 import useStore, { useSelectedContact } from "../../store/store";
-import { AppContextType, Contact, ContactStatusTypes } from "../../types/types";
+import { Contact, ContactStatusTypes } from "../../types/types";
 import Loading from "../Loading";
 import NoData from "../NoData";
 import ContactCard from "./ContactCard";
@@ -16,7 +15,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
   const { contacts, setContacts } = useStore();
   const selected = useSelectedContact();
 
-  const { setShowAddContact } = useContext(AppContext) as AppContextType;
+  const { setShowAddContact } = useStore();
 
   const {
     data: fetchedContacts,
@@ -75,7 +74,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
       {loading ? (
         <Loading size={"medium"} className="mt-4" />
       ) : (
-        <ul className="w-[100%] h-full">
+        <div className="w-[100%] h-full">
           <VirtualScroller
             items={contacts}
             itemSize={50}
@@ -91,7 +90,7 @@ const Contacts: React.FC<{ type: ContactStatusTypes }> = ({ type }) => {
               />
             );
           })} */}
-        </ul>
+        </div>
       )}
     </>
   );
