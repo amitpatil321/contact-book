@@ -6,7 +6,7 @@ import { useSetSelectedContact } from "../../store/store";
 import { Contact } from "../../types/types";
 import ListActionButtons from "./ListActionButtons";
 
-const ContactCard: React.FC<{ contact: Contact; selected: boolean }> = ({
+const ContactCard: React.FC<{ contact: Contact; selected?: boolean }> = ({
   contact,
   selected,
 }) => {
@@ -14,7 +14,7 @@ const ContactCard: React.FC<{ contact: Contact; selected: boolean }> = ({
   const setSelectedContact = useSetSelectedContact();
 
   return (
-    <motion.li
+    <motion.div
       key={contact.id}
       className={`group align-top mx-4 flex flex-row  hover:bg-purple-100 mb-2 px-1 py-3 rounded-lg transition duration-500 cursor-pointer ${
         selected ? `bg-purple-100` : ``
@@ -44,7 +44,7 @@ const ContactCard: React.FC<{ contact: Contact; selected: boolean }> = ({
         </div>
       </div>
       <ListActionButtons key={contact.id} contact={contact} />
-    </motion.li>
+    </motion.div>
   );
 };
 
