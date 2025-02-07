@@ -4,7 +4,7 @@ import Loading from "../components/Loading";
 import { CONTACT_STATUS } from "../constants/constants";
 import { useShowAddContactForm } from "../store/store";
 import { ContactStatusTypes } from "../types/types";
-import ListFavorites from "./ListFavorites/ListFavorites";
+// import ListFavorites from "./ListFavorites/ListFavorites";
 
 const ListContacts = React.lazy(() => import("./ListContacts/ListContacts"));
 const ContactDetails = React.lazy(
@@ -13,6 +13,7 @@ const ContactDetails = React.lazy(
 const AddContact = React.lazy(
   () => import("../components/AddContact/AddContact")
 );
+const ListFavorites = React.lazy(() => import("./ListFavorites/ListFavorites"));
 
 const ContactListDetails: React.FC<{ type: ContactStatusTypes }> = ({
   type,
