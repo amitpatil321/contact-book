@@ -10,3 +10,6 @@ Simple contact Book application
 5) Supabase
 6) Prime React
 7) Tailwind
+
+## Lighthouse Report
+<img src="contact book.png"/>
