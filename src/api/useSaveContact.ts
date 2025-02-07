@@ -1,5 +1,5 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { TABLES } from "../constants/constants";
+import { CONTACT_STATUS, TABLES } from "../constants/constants";
 import messages from "../constants/messages";
 import supabase from "../constants/supabase";
 import { Contact, Meta } from "../types/types";
@@ -28,7 +28,7 @@ const saveContact = async (
       email,
       mobile,
       profile_pic,
-      status,
+      status: CONTACT_STATUS.active,
     })
     .select();
 
