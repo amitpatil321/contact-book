@@ -27,7 +27,7 @@ const useStore = create<StoreState>((set) => ({
   setContacts: (contacts) => set({ contacts }),
   setSelectedContact: (contact) => set({ selectedContact: contact ?? null }),
   setSidebarState: (isOpen) => set({ sidebarExpanded: isOpen }),
-  setShowAddContact: (isOpen) => set({ addContactForm: isOpen }),
+  setShowAddContact: (isOpen) => set({ showAddContactForm: isOpen }),
 }));
 
 export default useStore;
