@@ -11,5 +11,6 @@ Simple contact Book application
 6) Prime React
 7) Tailwind
 
-## Lighthouse Report
-<img src="contact book.png"/>
+## Preview and Lighthouse Report
+<img src="contact-book-preview.png"/>
+<img src="lighthouse-report.png"/>
